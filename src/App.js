@@ -57,28 +57,22 @@ export default function App() {
 
     const now = Date.now();
 
-    const secondsSinceStart = Math.round((now - startTime) / 1_000);
-    const newTimeUntilNextAthlete =
-      timePerAthlete - (secondsSinceStart % timePerAthlete);
+    const secondsSinceStart = toSeconds(now - startTime);
+    const prevSecondsSinceStart = toSeconds(prevTimeRef.current - startTime);
 
-    setTimeUntilNextAthlete(newTimeUntilNextAthlete);
+    setTimeUntilNextAthlete(Math.max(timePerAthlete - secondsSinceStart, 0));
 
-    const prevSecondsSinceStart = Math.round(
-      (prevTimeRef.current - startTime) / 1_000
-    );
-    const prevTimeUntilNextAthlete =
-      timePerAthlete - (prevSecondsSinceStart % timePerAthlete);
-
-    if (newTimeUntilNextAthlete !== prevTimeUntilNextAthlete) {
-      if (newTimeUntilNextAthlete >= prevTimeUntilNextAthlete) {
+    if (secondsSinceStart !== prevSecondsSinceStart) {
+      if (secondsSinceStart >= timePerAthlete) {
         if (speechEnabled) {
           speakCommand(0, { nextAthlete: athletes[nextAthlete].text });
         }
 
         setCurrentAthlete(nextAthlete);
-      } else if (newTimeUntilNextAthlete > 0) {
+        setStartTime(now);
+      } else {
         if (speechEnabled) {
-          speakCommand(newTimeUntilNextAthlete, {
+          speakCommand(timePerAthlete - secondsSinceStart, {
             nextAthlete: athletes[nextAthlete].text,
           });
         }
@@ -92,6 +86,7 @@ export default function App() {
     const now = Date.now();
     setStartTime(now);
     prevTimeRef.current = now;
+    setTimeUntilNextAthlete(timePerAthlete);
 
     setCurrentAthlete(0);
     setRunning(true);
@@ -228,4 +223,8 @@ export default function App() {
       </Container>
     </>
   );
+}
+
+function toSeconds(ms) {
+  return Math.round(ms / 1_000);
 }
