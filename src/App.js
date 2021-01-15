@@ -79,7 +79,7 @@ export default function App() {
           } else if (newTimeUntilNextAthlete > 0) {
             if (speechEnabled) {
               speakCommand(newTimeUntilNextAthlete, {
-                nextAthlete: athletes[nextAthlete],
+                nextAthlete: athletes[nextAthlete].text,
               });
             }
           }
