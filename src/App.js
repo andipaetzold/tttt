@@ -94,7 +94,7 @@ export default function App() {
 
       <Card>
         <Card.Body>
-          <Form.Group>
+          <Form.Group controlId="timePerAthlete">
             <Form.Label>Interval (in Sekunden)</Form.Label>
             <Form.Control
               type="number"
@@ -102,7 +102,7 @@ export default function App() {
               onChange={(e) => setTimePerAthlete(+e.target.value)}
             />
           </Form.Group>
-          <Form.Group>
+          <Form.Group controlId="speechEnabled">
             <Form.Check
               type="checkbox"
               label="Sprachausgabe"
