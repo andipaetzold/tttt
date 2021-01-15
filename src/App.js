@@ -34,12 +34,13 @@ export default function App() {
 
   const [startDelay, setStartDelay] = useState(DEFAULT_START_DELAY);
 
-  const [timePerAthlete, setTimePerAthlete] = useState(
-    DEFAULT_TIME_PER_ATHLETE
-  );
   const [speechEnabled, setSpeechEnabled] = useState(DEFAULT_SPEECH_ENABLED);
   const [athletes, setAthletes] = useState(
-    DEFAULT_ATHLETES.map((athlete) => ({ text: athlete, enabled: true }))
+    DEFAULT_ATHLETES.map((athlete) => ({
+      text: athlete,
+      enabled: true,
+      time: DEFAULT_TIME_PER_ATHLETE,
+    }))
   );
 
   const [timeUntilNextChange, setTimeUntilNextChange] = useState(0);
@@ -66,7 +67,7 @@ export default function App() {
     }
 
     const changeTime =
-      currentAthlete === undefined ? startDelay : timePerAthlete;
+      currentAthlete === undefined ? startDelay : athletes[currentAthlete].time;
 
     const now = Date.now();
 
@@ -103,7 +104,7 @@ export default function App() {
     const now = Date.now();
     setStartTime(now);
     prevTimeRef.current = now;
-    setTimeUntilNextChange(startDelay > 0 ? startDelay : timePerAthlete);
+    setTimeUntilNextChange(startDelay > 0 ? startDelay : athletes[0].time);
     setCurrentAthlete(startDelay > 0 ? undefined : 0);
 
     setRunning(true);
@@ -141,7 +142,11 @@ export default function App() {
               <ProgressBar
                 style={{ transform: "scaleX(-1)", background: "white" }}
                 now={timeUntilNextChange}
-                max={currentAthlete === undefined ? startDelay : timePerAthlete}
+                max={
+                  currentAthlete === undefined
+                    ? startDelay
+                    : athletes[currentAthlete].time
+                }
               />
             </>
           )}
@@ -152,7 +157,7 @@ export default function App() {
                 Stop
               </Button>
             ) : (
-              <Button variant="primary" onClick={handleStart}>
+              <Button variant="primary" onClick={handleStart} size="lg">
                 Start
               </Button>
             )}
@@ -171,18 +176,29 @@ export default function App() {
               >
                 <Col sm={12}>
                   <InputGroup>
-                    <InputGroup.Prepend>
-                      <InputGroup.Text>#{athleteIndex + 1}</InputGroup.Text>
-                    </InputGroup.Prepend>
                     <Form.Control
                       type="text"
-                      placeholder={`Athlete ${athleteIndex + 1}`}
+                      placeholder={`Name`}
                       value={athlete.text}
                       onChange={(e) =>
                         setAthletes(
                           athletes.map((a, ai) =>
                             ai === athleteIndex
                               ? { ...a, text: e.target.value }
+                              : a
+                          )
+                        )
+                      }
+                    />
+                    <Form.Control
+                      type="number"
+                      placeholder={`Time (in seconds)`}
+                      value={athlete.time}
+                      onChange={(e) =>
+                        setAthletes(
+                          athletes.map((a, ai) =>
+                            ai === athleteIndex
+                              ? { ...a, time: +e.target.value }
                               : a
                           )
                         )
@@ -227,16 +243,6 @@ export default function App() {
                 onChange={(e) => setStartDelay(+e.target.value)}
                 disabled={running}
                 min={0}
-              />
-            </Form.Group>
-            <Form.Group controlId="timePerAthlete">
-              <Form.Label>Interval (in seconds)</Form.Label>
-              <Form.Control
-                type="number"
-                value={timePerAthlete}
-                onChange={(e) => setTimePerAthlete(+e.target.value)}
-                disabled={running}
-                min={20}
               />
             </Form.Group>
             <Form.Group controlId="speechEnabled">
