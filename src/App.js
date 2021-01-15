@@ -148,7 +148,7 @@ export default function App() {
 
           <div className="mt-4 text-center">
             {running ? (
-              <Button variant="secondary" onClick={handleStop}>
+              <Button variant="danger" onClick={handleStop}>
                 Stop
               </Button>
             ) : (
