@@ -55,7 +55,7 @@ export default function App() {
               speakCommand(0, { nextAthlete: athletes[nextAthlete] });
             }
 
-            setCurrentAthlete((cur) => (cur + 1) % athletes.length);
+            setCurrentAthlete(nextAthlete);
           } else if (newTimeUntilNextAthlete > 0) {
             if (speechEnabled) {
               speakCommand(newTimeUntilNextAthlete, {
