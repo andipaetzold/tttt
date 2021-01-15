@@ -1,5 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  ProgressBar,
+  Row,
+} from "react-bootstrap";
 import { speakCommand } from "./speech";
 
 const DEFAULT_TIME_PER_ATHLETE = 30;
@@ -95,30 +103,32 @@ export default function App() {
     <Container>
       <h1>Team Time Trial Timer</h1>
 
-      <Card className="mb-2">
-        <Card.Body>
-          {running && (
-            <>
-              <h2>
-                {athletes[currentAthlete]} → {athletes[nextAthlete]}
-              </h2>
-              <h3>Wechsel in {timeUntilNextAthlete}s</h3>
-            </>
-          )}
+      <div className="mb-2">
+        {running && (
+          <>
+            <h2>
+              {athletes[currentAthlete]} → {athletes[nextAthlete]}
+            </h2>
+            <h3>Wechsel in {timeUntilNextAthlete}s</h3>
+            <ProgressBar
+              now={timePerAthlete - timeUntilNextAthlete}
+              max={timePerAthlete}
+            />
+          </>
+        )}
 
-          <div className="mt-4">
-            {running ? (
-              <Button variant="secondary" onClick={handleStop}>
-                Stop
-              </Button>
-            ) : (
-              <Button variant="primary" onClick={handleStart}>
-                Start
-              </Button>
-            )}
-          </div>
-        </Card.Body>
-      </Card>
+        <div className="mt-4 text-center">
+          {running ? (
+            <Button variant="secondary" onClick={handleStop}>
+              Stop
+            </Button>
+          ) : (
+            <Button variant="primary" onClick={handleStart}>
+              Start
+            </Button>
+          )}
+        </div>
+      </div>
 
       <Card>
         <Card.Body>
