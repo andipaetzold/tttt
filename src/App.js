@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Card, Container, Form } from "react-bootstrap";
-import { speak } from "./speech";
+import { speakCommand } from "./speech";
 
 export default function App() {
   const [startTime, setStartTime] = useState(0);
@@ -14,36 +14,61 @@ export default function App() {
     setRunning(true);
   };
 
+  const speakCommandIfEnabled = useCallback(
+    (command) => {
+      if (speechEnabled) {
+        speakCommand(command);
+      }
+    },
+    [speechEnabled]
+  );
+
   useEffect(() => {
     if (!running) {
       return;
     }
 
     let lastTotalAthleteIndex = 0;
+    let lastTimeUntilNextAthlete = undefined;
+
     const tick = () => {
       const now = Date.now();
 
       const secondsSinceStart = Math.round((now - startTime) / 1_000);
       const totalAthleteIndex = Math.floor(secondsSinceStart / timePerAthlete);
 
-      if (totalAthleteIndex !== lastTotalAthleteIndex) {
-        lastTotalAthleteIndex = totalAthleteIndex;
+      const newTimeUntilNextAthlete =
+        timePerAthlete - (secondsSinceStart % timePerAthlete);
 
-        if (speechEnabled) {
-          speak("Wechsel");
+      if (newTimeUntilNextAthlete !== lastTimeUntilNextAthlete) {
+        if (newTimeUntilNextAthlete >= lastTimeUntilNextAthlete) {
+          for (let i = lastTimeUntilNextAthlete - 1; i >= 0; --i) {
+            speakCommandIfEnabled(i);
+          }
+          for (let i = timePerAthlete; i >= newTimeUntilNextAthlete; --i) {
+            speakCommandIfEnabled(i);
+          }
+        } else {
+          for (
+            let i = lastTimeUntilNextAthlete - 1;
+            i >= newTimeUntilNextAthlete;
+            --i
+          ) {
+            speakCommandIfEnabled(i);
+          }
         }
+
+        lastTimeUntilNextAthlete = newTimeUntilNextAthlete;
       }
 
-      setTimeUntilNextAthlete(
-        timePerAthlete - (secondsSinceStart % timePerAthlete)
-      );
+      setTimeUntilNextAthlete(newTimeUntilNextAthlete);
     };
 
     tick();
 
     const timeout = setInterval(tick, 1_000);
     return () => clearTimeout(timeout);
-  }, [running, startTime, timePerAthlete, speechEnabled]);
+  }, [running, startTime, timePerAthlete, speakCommandIfEnabled]);
 
   return (
     <Container>
