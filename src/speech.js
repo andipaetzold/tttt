@@ -1,4 +1,5 @@
 const voiceCommands = {
+  start: () => "Start",
   15: ({ nextAthlete }) => `${nextAthlete}. Get ready.`,
   10: () => "Change in 10",
   5: () => "Five",

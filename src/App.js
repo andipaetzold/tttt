@@ -1,5 +1,5 @@
 import useInterval from "@use-it/interval";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   Button,
   ButtonGroup,
@@ -16,6 +16,7 @@ import {
 } from "react-bootstrap";
 import { speakCommand } from "./speech";
 
+const DEFAULT_START_DELAY = 0;
 const DEFAULT_TIME_PER_ATHLETE = 30;
 const DEFAULT_ATHLETES = [
   "Anton",
@@ -31,6 +32,8 @@ export default function App() {
   const [startTime, setStartTime] = useState(0);
   const [running, setRunning] = useState(false);
 
+  const [startDelay, setStartDelay] = useState(DEFAULT_START_DELAY);
+
   const [timePerAthlete, setTimePerAthlete] = useState(
     DEFAULT_TIME_PER_ATHLETE
   );
@@ -39,14 +42,21 @@ export default function App() {
     DEFAULT_ATHLETES.map((athlete) => ({ text: athlete, enabled: true }))
   );
 
-  const [timeUntilNextAthlete, setTimeUntilNextAthlete] = useState(0);
-  const [currentAthlete, setCurrentAthlete] = useState(0);
+  const [timeUntilNextChange, setTimeUntilNextChange] = useState(0);
+  const [currentAthlete, setCurrentAthlete] = useState(undefined);
 
-  const athletesWithIndex = athletes.map((a, ai) => ({ ...a, index: ai }));
-  const nextAthlete = [
-    ...athletesWithIndex.slice(currentAthlete + 1),
-    ...athletesWithIndex,
-  ].filter((a) => a.enabled)[0].index;
+  const nextAthlete = useMemo(() => {
+    const athletesWithIndex = athletes.map((a, ai) => ({ ...a, index: ai }));
+
+    if (currentAthlete === undefined) {
+      return athletesWithIndex.find((a) => a.enabled).index;
+    }
+
+    return [
+      ...athletesWithIndex.slice(currentAthlete + 1),
+      ...athletesWithIndex,
+    ].filter((a) => a.enabled)[0].index;
+  }, [currentAthlete, athletes]);
 
   const prevTimeRef = useRef();
 
@@ -55,24 +65,31 @@ export default function App() {
       return;
     }
 
+    const changeTime =
+      currentAthlete === undefined ? startDelay : timePerAthlete;
+
     const now = Date.now();
 
     const secondsSinceStart = toSeconds(now - startTime);
     const prevSecondsSinceStart = toSeconds(prevTimeRef.current - startTime);
 
-    setTimeUntilNextAthlete(Math.max(timePerAthlete - secondsSinceStart, 0));
+    setTimeUntilNextChange(Math.max(changeTime - secondsSinceStart, 0));
 
     if (secondsSinceStart !== prevSecondsSinceStart) {
-      if (secondsSinceStart >= timePerAthlete) {
+      if (secondsSinceStart >= changeTime) {
         if (speechEnabled) {
-          speakCommand(0, { nextAthlete: athletes[nextAthlete].text });
+          if (currentAthlete === undefined) {
+            speakCommand("start");
+          } else {
+            speakCommand(0, { nextAthlete: athletes[nextAthlete].text });
+          }
         }
 
         setCurrentAthlete(nextAthlete);
         setStartTime(now);
       } else {
         if (speechEnabled) {
-          speakCommand(timePerAthlete - secondsSinceStart, {
+          speakCommand(changeTime - secondsSinceStart, {
             nextAthlete: athletes[nextAthlete].text,
           });
         }
@@ -86,9 +103,9 @@ export default function App() {
     const now = Date.now();
     setStartTime(now);
     prevTimeRef.current = now;
-    setTimeUntilNextAthlete(timePerAthlete);
+    setTimeUntilNextChange(startDelay > 0 ? startDelay : timePerAthlete);
+    setCurrentAthlete(startDelay > 0 ? undefined : 0);
 
-    setCurrentAthlete(0);
     setRunning(true);
   };
 
@@ -109,7 +126,9 @@ export default function App() {
           {running && (
             <>
               <h1 className="text-center display-2">
-                {athletes[currentAthlete].text}
+                {currentAthlete === undefined
+                  ? "Wait"
+                  : athletes[currentAthlete].text}
               </h1>
 
               <h2 className="text-center display-5">
@@ -117,12 +136,12 @@ export default function App() {
               </h2>
 
               <h3 className="text-center display-6">
-                ⏱️ {timeUntilNextAthlete}s
+                ⏱️ {timeUntilNextChange}s
               </h3>
               <ProgressBar
                 style={{ transform: "scaleX(-1)", background: "white" }}
-                now={timeUntilNextAthlete}
-                max={timePerAthlete}
+                now={timeUntilNextChange}
+                max={currentAthlete === undefined ? startDelay : timePerAthlete}
               />
             </>
           )}
@@ -200,8 +219,18 @@ export default function App() {
             ))}
 
             <h3>Settings</h3>
+            <Form.Group controlId="startDelay">
+              <Form.Label>Start Delay (in seconds)</Form.Label>
+              <Form.Control
+                type="number"
+                value={startDelay}
+                onChange={(e) => setStartDelay(+e.target.value)}
+                disabled={running}
+                min={0}
+              />
+            </Form.Group>
             <Form.Group controlId="timePerAthlete">
-              <Form.Label>Interval (in Seconds)</Form.Label>
+              <Form.Label>Interval (in seconds)</Form.Label>
               <Form.Control
                 type="number"
                 value={timePerAthlete}
