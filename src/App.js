@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { speakCommand } from "./speech";
-
-let prevTickTime = undefined;
 
 export default function App() {
   const [startTime, setStartTime] = useState(0);
@@ -21,23 +19,24 @@ export default function App() {
   const [currentAthlete, setCurrentAthlete] = useState(0);
   const [nextAthlete, setNextAthlete] = useState(1);
 
+  const requestRef = useRef();
+  const prevTimeRef = useRef();
+
   useEffect(() => {
     if (!running) {
       return;
     }
 
-    const tick = () => {
-      const now = Date.now();
-
+    const tick = (now) => {
       const secondsSinceStart = Math.round((now - startTime) / 1_000);
       const newTimeUntilNextAthlete =
         timePerAthlete - (secondsSinceStart % timePerAthlete);
 
       setTimeUntilNextAthlete(newTimeUntilNextAthlete);
 
-      if (prevTickTime !== undefined) {
+      if (prevTimeRef.current) {
         const prevSecondsSinceStart = Math.round(
-          (prevTickTime - startTime) / 1_000
+          (prevTimeRef.current - startTime) / 1_000
         );
         const prevTimeUntilNextAthlete =
           timePerAthlete - (prevSecondsSinceStart % timePerAthlete);
@@ -59,16 +58,24 @@ export default function App() {
           }
         }
       }
-      prevTickTime = now;
+
+      prevTimeRef.current = now;
+      requestRef.current = requestAnimationFrame(tick);
     };
 
-    tick();
-    const handle = setInterval(tick, 500);
-    return () => clearInterval(handle);
-  }, [running, speechEnabled, athletes, nextAthlete, timePerAthlete, startTime]);
+    requestRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(requestRef.current);
+  }, [
+    running,
+    speechEnabled,
+    athletes,
+    nextAthlete,
+    timePerAthlete,
+    startTime,
+  ]);
 
   const handleStart = () => {
-    setStartTime(Date.now());
+    setStartTime(performance.now());
     setCurrentAthlete(0);
     setNextAthlete(1);
 
