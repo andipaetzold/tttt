@@ -2,20 +2,28 @@ import { useEffect, useRef, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { speakCommand } from "./speech";
 
+const DEFAULT_TIME_PER_ATHLETE = 30;
+const DEFAULT_ATHLETES = [
+  "Anton",
+  "Berta",
+  "Cäsar",
+  "Dora",
+  "Emil",
+  "Friedrich",
+];
+const DEFAULT_SPEECH_ENABLED = false;
+
 export default function App() {
   const [startTime, setStartTime] = useState(0);
   const [running, setRunning] = useState(false);
-  const [timePerAthlete, setTimePerAthlete] = useState(30);
-  const [speechEnabled, setSpeechEnabled] = useState(false);
+
+  const [timePerAthlete, setTimePerAthlete] = useState(
+    DEFAULT_TIME_PER_ATHLETE
+  );
+  const [speechEnabled, setSpeechEnabled] = useState(DEFAULT_SPEECH_ENABLED);
+  const [athletes, setAthletes] = useState(DEFAULT_ATHLETES);
+
   const [timeUntilNextAthlete, setTimeUntilNextAthlete] = useState(0);
-  const [athletes, setAthletes] = useState([
-    "Anton",
-    "Berta",
-    "Cäsar",
-    "Dora",
-    "Emil",
-    "Friedrich",
-  ]);
   const [currentAthlete, setCurrentAthlete] = useState(0);
   const nextAthlete = (currentAthlete + 1) % athletes.length;
 
