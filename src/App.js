@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import useInterval from "@use-it/interval";
+import { useRef, useState } from "react";
 import {
   Button,
+  ButtonGroup,
   Card,
   Col,
   Container,
@@ -11,7 +13,6 @@ import {
   ProgressBar,
   Row,
   ToggleButton,
-  ButtonGroup,
 } from "react-bootstrap";
 import { speakCommand } from "./speech";
 
@@ -47,62 +48,51 @@ export default function App() {
     ...athletesWithIndex,
   ].filter((a) => a.enabled)[0].index;
 
-  const requestRef = useRef();
   const prevTimeRef = useRef();
 
-  useEffect(() => {
+  useInterval(() => {
     if (!running) {
       return;
     }
 
-    const tick = (now) => {
-      const secondsSinceStart = Math.round((now - startTime) / 1_000);
-      const newTimeUntilNextAthlete =
-        timePerAthlete - (secondsSinceStart % timePerAthlete);
+    const now = Date.now();
 
-      setTimeUntilNextAthlete(newTimeUntilNextAthlete);
+    const secondsSinceStart = Math.round((now - startTime) / 1_000);
+    const newTimeUntilNextAthlete =
+      timePerAthlete - (secondsSinceStart % timePerAthlete);
 
-      if (prevTimeRef.current) {
-        const prevSecondsSinceStart = Math.round(
-          (prevTimeRef.current - startTime) / 1_000
-        );
-        const prevTimeUntilNextAthlete =
-          timePerAthlete - (prevSecondsSinceStart % timePerAthlete);
+    setTimeUntilNextAthlete(newTimeUntilNextAthlete);
 
-        if (newTimeUntilNextAthlete !== prevTimeUntilNextAthlete) {
-          if (newTimeUntilNextAthlete >= prevTimeUntilNextAthlete) {
-            if (speechEnabled) {
-              speakCommand(0, { nextAthlete: athletes[nextAthlete].text });
-            }
+    const prevSecondsSinceStart = Math.round(
+      (prevTimeRef.current - startTime) / 1_000
+    );
+    const prevTimeUntilNextAthlete =
+      timePerAthlete - (prevSecondsSinceStart % timePerAthlete);
 
-            setCurrentAthlete(nextAthlete);
-          } else if (newTimeUntilNextAthlete > 0) {
-            if (speechEnabled) {
-              speakCommand(newTimeUntilNextAthlete, {
-                nextAthlete: athletes[nextAthlete].text,
-              });
-            }
-          }
+    if (newTimeUntilNextAthlete !== prevTimeUntilNextAthlete) {
+      if (newTimeUntilNextAthlete >= prevTimeUntilNextAthlete) {
+        if (speechEnabled) {
+          speakCommand(0, { nextAthlete: athletes[nextAthlete].text });
+        }
+
+        setCurrentAthlete(nextAthlete);
+      } else if (newTimeUntilNextAthlete > 0) {
+        if (speechEnabled) {
+          speakCommand(newTimeUntilNextAthlete, {
+            nextAthlete: athletes[nextAthlete].text,
+          });
         }
       }
+    }
 
-      prevTimeRef.current = now;
-      requestRef.current = requestAnimationFrame(tick);
-    };
-
-    requestRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(requestRef.current);
-  }, [
-    running,
-    speechEnabled,
-    athletes,
-    nextAthlete,
-    timePerAthlete,
-    startTime,
-  ]);
+    prevTimeRef.current = now;
+  }, 500);
 
   const handleStart = () => {
-    setStartTime(performance.now());
+    const now = Date.now();
+    setStartTime(now);
+    prevTimeRef.current = now;
+
     setCurrentAthlete(0);
     setRunning(true);
   };

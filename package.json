@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://andipaetzold.github.io/tttt",
   "dependencies": {
+    "@use-it/interval": "^1.0.0",
     "bootstrap": "^4.5.3",
     "react": "17.0.1",
     "react-bootstrap": "^1.4.3",
