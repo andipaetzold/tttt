@@ -113,7 +113,7 @@ export default function App() {
 
   return (
     <>
-      <Navbar bg="light">
+      <Navbar bg="light" className="mb-2">
         <Container>
           <Navbar.Brand>Team Time Trial Timer</Navbar.Brand>
         </Container>
