@@ -157,7 +157,7 @@ export default function App() {
 
         <Card>
           <Card.Body>
-            <h3>Sportler</h3>
+            <h3>Athletes</h3>
 
             {athletes.map((athlete, athleteIndex) => (
               <Form.Group
@@ -214,9 +214,9 @@ export default function App() {
               </Form.Group>
             ))}
 
-            <h3>Einstellungen</h3>
+            <h3>Settings</h3>
             <Form.Group controlId="timePerAthlete">
-              <Form.Label>Interval (in Sekunden)</Form.Label>
+              <Form.Label>Interval (in Seconds)</Form.Label>
               <Form.Control
                 type="number"
                 value={timePerAthlete}
@@ -228,7 +228,7 @@ export default function App() {
             <Form.Group controlId="speechEnabled">
               <Form.Check
                 type="checkbox"
-                label="Sprachausgabe"
+                label="Voice Output"
                 checked={speechEnabled}
                 onChange={(e) => setSpeechEnabled(e.target.checked)}
               />
