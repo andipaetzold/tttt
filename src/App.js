@@ -17,7 +17,7 @@ export default function App() {
     "Friedrich",
   ]);
   const [currentAthlete, setCurrentAthlete] = useState(0);
-  const [nextAthlete, setNextAthlete] = useState(1);
+  const nextAthlete = (currentAthlete + 1) % athletes.length;
 
   const requestRef = useRef();
   const prevTimeRef = useRef();
@@ -48,7 +48,6 @@ export default function App() {
             }
 
             setCurrentAthlete((cur) => (cur + 1) % athletes.length);
-            setNextAthlete((cur) => (cur + 1) % athletes.length);
           } else if (newTimeUntilNextAthlete > 0) {
             if (speechEnabled) {
               speakCommand(newTimeUntilNextAthlete, {
@@ -77,8 +76,6 @@ export default function App() {
   const handleStart = () => {
     setStartTime(performance.now());
     setCurrentAthlete(0);
-    setNextAthlete(1);
-
     setRunning(true);
   };
 
