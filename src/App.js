@@ -1,34 +1,25 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { speakCommand } from "./speech";
 
-let lastTimeUntilNextAthlete = undefined;
+let prevTickTime = undefined;
 
 export default function App() {
   const [startTime, setStartTime] = useState(0);
   const [running, setRunning] = useState(false);
-  const [timePerAthlete, setTimePerAthlete] = useState(10);
+  const [timePerAthlete, setTimePerAthlete] = useState(30);
   const [speechEnabled, setSpeechEnabled] = useState(false);
   const [timeUntilNextAthlete, setTimeUntilNextAthlete] = useState(0);
-  const [athletes, setAthletes] = useState(["A", "B", "C", "D", "E", "F"]);
+  const [athletes, setAthletes] = useState([
+    "Anton",
+    "Berta",
+    "Cäsar",
+    "Dora",
+    "Emil",
+    "Friedrich",
+  ]);
   const [currentAthlete, setCurrentAthlete] = useState(0);
   const [nextAthlete, setNextAthlete] = useState(1);
-
-  const handleStart = () => {
-    setStartTime(Date.now());
-    setCurrentAthlete(0);
-    setNextAthlete(1);
-    setRunning(true);
-  };
-
-  const speakCommandIfEnabled = useCallback(
-    (command) => {
-      if (speechEnabled) {
-        speakCommand(command);
-      }
-    },
-    [speechEnabled]
-  );
 
   useEffect(() => {
     if (!running) {
@@ -39,55 +30,54 @@ export default function App() {
       const now = Date.now();
 
       const secondsSinceStart = Math.round((now - startTime) / 1_000);
-
       const newTimeUntilNextAthlete =
         timePerAthlete - (secondsSinceStart % timePerAthlete);
 
-      if (lastTimeUntilNextAthlete === undefined) {
-        lastTimeUntilNextAthlete = newTimeUntilNextAthlete;
-      } else if (newTimeUntilNextAthlete !== lastTimeUntilNextAthlete) {
-        if (newTimeUntilNextAthlete >= lastTimeUntilNextAthlete) {
-          // Next athlete
-          setCurrentAthlete((cur) => (cur + 1) % athletes.length);
-          setNextAthlete((cur) => (cur + 1) % athletes.length);
+      setTimeUntilNextAthlete(newTimeUntilNextAthlete);
 
-          // Commands
-          for (let i = lastTimeUntilNextAthlete - 1; i >= 0; --i) {
-            speakCommandIfEnabled(i);
-          }
-          for (let i = timePerAthlete; i >= newTimeUntilNextAthlete; --i) {
-            speakCommandIfEnabled(i);
-          }
-        } else {
-          // Commands
-          for (
-            let i = lastTimeUntilNextAthlete - 1;
-            i >= newTimeUntilNextAthlete;
-            --i
-          ) {
-            speakCommandIfEnabled(i);
+      if (prevTickTime !== undefined) {
+        const prevSecondsSinceStart = Math.round(
+          (prevTickTime - startTime) / 1_000
+        );
+        const prevTimeUntilNextAthlete =
+          timePerAthlete - (prevSecondsSinceStart % timePerAthlete);
+
+        if (newTimeUntilNextAthlete !== prevTimeUntilNextAthlete) {
+          if (newTimeUntilNextAthlete >= prevTimeUntilNextAthlete) {
+            if (speechEnabled) {
+              speakCommand(0, { nextAthlete: athletes[nextAthlete] });
+            }
+
+            setCurrentAthlete((cur) => (cur + 1) % athletes.length);
+            setNextAthlete((cur) => (cur + 1) % athletes.length);
+          } else if (newTimeUntilNextAthlete > 0) {
+            if (speechEnabled) {
+              speakCommand(newTimeUntilNextAthlete, {
+                nextAthlete: athletes[nextAthlete],
+              });
+            }
           }
         }
-
-        lastTimeUntilNextAthlete = newTimeUntilNextAthlete;
       }
-
-      setTimeUntilNextAthlete(newTimeUntilNextAthlete);
+      prevTickTime = now;
     };
 
     tick();
+    const handle = setInterval(tick, 500);
+    return () => clearInterval(handle);
+  }, [running, speechEnabled, athletes, nextAthlete, timePerAthlete, startTime]);
 
-    const timeout = setInterval(tick, 1_000);
-    return () => clearTimeout(timeout);
-  }, [
-    running,
-    startTime,
-    timePerAthlete,
-    speakCommandIfEnabled,
-    athletes.length,
-    nextAthlete,
-    currentAthlete,
-  ]);
+  const handleStart = () => {
+    setStartTime(Date.now());
+    setCurrentAthlete(0);
+    setNextAthlete(1);
+
+    setRunning(true);
+  };
+
+  const handleStop = () => {
+    setRunning(false);
+  };
 
   return (
     <Container>
@@ -106,7 +96,7 @@ export default function App() {
 
           <div className="mt-4">
             {running ? (
-              <Button variant="secondary" onClick={() => setRunning(false)}>
+              <Button variant="secondary" onClick={handleStop}>
                 Stop
               </Button>
             ) : (
@@ -155,6 +145,8 @@ export default function App() {
               type="number"
               value={timePerAthlete}
               onChange={(e) => setTimePerAthlete(+e.target.value)}
+              disabled={running}
+              min={20}
             />
           </Form.Group>
           <Form.Group controlId="speechEnabled">
