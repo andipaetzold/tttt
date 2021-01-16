@@ -170,6 +170,7 @@ export default function App() {
                 <Col sm={12}>
                   <InputGroup>
                     <Form.Control
+                      style={{ background: !athlete.enabled && "#6c757d80" }}
                       type="text"
                       placeholder={`Name`}
                       value={athlete.text}
@@ -184,6 +185,7 @@ export default function App() {
                       }
                     />
                     <Form.Control
+                      style={{ background: !athlete.enabled && "#6c757d80" }}
                       type="number"
                       placeholder={`Time (in seconds)`}
                       value={athlete.time}
