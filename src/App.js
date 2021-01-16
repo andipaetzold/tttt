@@ -16,6 +16,7 @@ import {
 } from "react-bootstrap";
 import { speakCommand } from "./speech";
 import { loadConfig, saveConfig } from "./config";
+import { useVoices } from "./useVoices";
 
 const initialConfig = loadConfig();
 
@@ -29,12 +30,16 @@ export default function App() {
   );
   const [athletes, setAthletes] = useState(initialConfig.athletes);
 
+  const voices = useVoices();
+  const [voiceURI, setVoiceURI] = useState(initialConfig.voice);
+  const voice = voices.find((v) => v.voiceURI === voiceURI);
+
   const [timeUntilNextChange, setTimeUntilNextChange] = useState(0);
   const [currentAthlete, setCurrentAthlete] = useState(undefined);
 
   useEffect(() => {
-    saveConfig({ athletes, startDelay, speechEnabled });
-  }, [athletes, startDelay, speechEnabled]);
+    saveConfig({ athletes, startDelay, speechEnabled, voice: voiceURI });
+  }, [athletes, startDelay, speechEnabled, voiceURI]);
 
   const nextAthlete = useMemo(() => {
     const athletesWithIndex = athletes.map((a, ai) => ({ ...a, index: ai }));
@@ -50,6 +55,13 @@ export default function App() {
   }, [currentAthlete, athletes]);
 
   const prevTimeRef = useRef();
+
+  const speak = (command) => {
+    if (!speechEnabled) {
+      return;
+    }
+    speakCommand(command, { nextAthlete: athletes[nextAthlete].text }, voice);
+  };
 
   useInterval(() => {
     if (!running) {
@@ -70,9 +82,9 @@ export default function App() {
       if (secondsSinceStart >= changeTime) {
         if (speechEnabled) {
           if (currentAthlete === undefined) {
-            speakCommand("start");
+            speak("start");
           } else {
-            speakCommand(0, { nextAthlete: athletes[nextAthlete].text });
+            speak(0);
           }
         }
 
@@ -80,9 +92,7 @@ export default function App() {
         setStartTime(now);
       } else {
         if (speechEnabled) {
-          speakCommand(changeTime - secondsSinceStart, {
-            nextAthlete: athletes[nextAthlete].text,
-          });
+          speak(changeTime - secondsSinceStart);
         }
       }
     }
@@ -102,6 +112,17 @@ export default function App() {
 
   const handleStop = () => {
     setRunning(false);
+  };
+
+  const handleVoiceChange = (newVoiceURI) => {
+    setVoiceURI(newVoiceURI);
+
+    // do not use `speak` here as it would use the old voice state
+    speakCommand(
+      "voiceChanged",
+      {},
+      voices.find((v) => v.voiceURI === newVoiceURI)
+    );
   };
 
   return (
@@ -244,6 +265,20 @@ export default function App() {
                 checked={speechEnabled}
                 onChange={(e) => setSpeechEnabled(e.target.checked)}
               />
+            </Form.Group>
+            <Form.Group controlId="voice">
+              <Form.Label>Voice</Form.Label>
+              <Form.Control
+                as="select"
+                onChange={(e) => handleVoiceChange(e.target.value)}
+                value={voiceURI}
+              >
+                {voices.map((voice) => (
+                  <option key={voice.voiceURI} value={voice.voiceURI}>
+                    {voice.name}
+                  </option>
+                ))}
+              </Form.Control>
             </Form.Group>
           </Card.Body>
         </Card>

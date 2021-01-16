@@ -1,4 +1,5 @@
 const voiceCommands = {
+  voiceChanged: () => "Go faster!",
   start: () => "Start",
   15: ({ nextAthlete }) => `${nextAthlete}. Get ready.`,
   10: () => "Change in 10",
@@ -8,16 +9,18 @@ const voiceCommands = {
   0: ({ nextAthlete }) => `Change to ${nextAthlete}`,
 };
 
-export function speakCommand(command, args) {
+export function speakCommand(command, args, voice) {
   if (voiceCommands[command]) {
-    speak(voiceCommands[command](args));
+    speak(voiceCommands[command](args), voice);
   }
 }
 
-export function speak(text) {
+export function speak(text, voice) {
   const msg = new SpeechSynthesisUtterance();
   msg.text = text;
   msg.lang = "en-US";
+  msg.voice = voice;
 
-  speechSynthesis.speak(msg);
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(msg);
 }

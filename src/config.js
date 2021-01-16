@@ -27,6 +27,7 @@ export function loadConfig() {
       athletes: config.athletes || DEFAULT_ATHLETES,
       speechEnabled: config.speechEnabled,
       startDelay: config.startDelay,
+      voice: config.voice,
     };
   } catch {
     return {
