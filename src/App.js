@@ -1,5 +1,5 @@
 import useInterval from "@use-it/interval";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Button,
   ButtonGroup,
@@ -12,32 +12,29 @@ import {
   Navbar,
   ProgressBar,
   Row,
-  ToggleButton
+  ToggleButton,
 } from "react-bootstrap";
 import { speakCommand } from "./speech";
+import { loadConfig, saveConfig } from "./config";
 
-const DEFAULT_START_DELAY = 0;
-const DEFAULT_TIME_PER_ATHLETE = 30;
-const DEFAULT_ATHLETES = ["Amelia", "Bowie", "Coco", "Dan", "Emma", "Finn"];
-const DEFAULT_SPEECH_ENABLED = false;
+const initialConfig = loadConfig();
 
 export default function App() {
   const [startTime, setStartTime] = useState(0);
   const [running, setRunning] = useState(false);
 
-  const [startDelay, setStartDelay] = useState(DEFAULT_START_DELAY);
-
-  const [speechEnabled, setSpeechEnabled] = useState(DEFAULT_SPEECH_ENABLED);
-  const [athletes, setAthletes] = useState(
-    DEFAULT_ATHLETES.map((athlete) => ({
-      text: athlete,
-      enabled: true,
-      time: DEFAULT_TIME_PER_ATHLETE,
-    }))
+  const [startDelay, setStartDelay] = useState(initialConfig.startDelay);
+  const [speechEnabled, setSpeechEnabled] = useState(
+    initialConfig.speechEnabled
   );
+  const [athletes, setAthletes] = useState(initialConfig.athletes);
 
   const [timeUntilNextChange, setTimeUntilNextChange] = useState(0);
   const [currentAthlete, setCurrentAthlete] = useState(undefined);
+
+  useEffect(() => {
+    saveConfig({ athletes, startDelay, speechEnabled });
+  }, [athletes, startDelay, speechEnabled]);
 
   const nextAthlete = useMemo(() => {
     const athletesWithIndex = athletes.map((a, ai) => ({ ...a, index: ai }));
