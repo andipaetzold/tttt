@@ -95,7 +95,7 @@ export default function App() {
     setStartTime(now);
     prevTimeRef.current = now;
     setTimeUntilNextChange(startDelay > 0 ? startDelay : athletes[0].time);
-    setCurrentAthlete(startDelay > 0 ? undefined : 0);
+    setCurrentAthlete(startDelay > 0 ? undefined : nextAthlete);
 
     setRunning(true);
   };
