@@ -19,12 +19,12 @@ import { speakCommand } from "./speech";
 const DEFAULT_START_DELAY = 0;
 const DEFAULT_TIME_PER_ATHLETE = 30;
 const DEFAULT_ATHLETES = [
-  "Anton",
-  "Berta",
-  "Cäsar",
-  "Dora",
-  "Emil",
-  "Friedrich",
+  "Amelia",
+  "Bowie",
+  "Coco",
+  "Dan",
+  "Emma",
+  "Finn",
 ];
 const DEFAULT_SPEECH_ENABLED = false;
 
