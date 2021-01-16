@@ -12,20 +12,13 @@ import {
   Navbar,
   ProgressBar,
   Row,
-  ToggleButton,
+  ToggleButton
 } from "react-bootstrap";
 import { speakCommand } from "./speech";
 
 const DEFAULT_START_DELAY = 0;
 const DEFAULT_TIME_PER_ATHLETE = 30;
-const DEFAULT_ATHLETES = [
-  "Amelia",
-  "Bowie",
-  "Coco",
-  "Dan",
-  "Emma",
-  "Finn",
-];
+const DEFAULT_ATHLETES = ["Amelia", "Bowie", "Coco", "Dan", "Emma", "Finn"];
 const DEFAULT_SPEECH_ENABLED = false;
 
 export default function App() {
@@ -164,7 +157,7 @@ export default function App() {
           </div>
         </Jumbotron>
 
-        <Card>
+        <Card className="mb-2">
           <Card.Body>
             <h3>Athletes</h3>
 
@@ -255,6 +248,11 @@ export default function App() {
             </Form.Group>
           </Card.Body>
         </Card>
+
+        <footer className="text-muted mb-2" rel="noopener noreferrer">
+          <a href="https://github.com/andipaetzold/tttt">GitHub</a> | &copy;
+          Andi P&auml;tzold
+        </footer>
       </Container>
     </>
   );
