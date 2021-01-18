@@ -12,10 +12,10 @@ import {
   Navbar,
   ProgressBar,
   Row,
-  ToggleButton,
+  ToggleButton
 } from "react-bootstrap";
-import { speakCommand } from "./speech";
 import { loadConfig, saveConfig } from "./config";
+import { speakCommand } from "./speech";
 import { useVoices } from "./useVoices";
 
 const initialConfig = loadConfig();
@@ -286,6 +286,24 @@ export default function App() {
                   <option key="default">Default</option>
                 )}
               </Form.Control>
+              <Form.Text>
+                If the voice output does not work anymore, click{" "}
+                <Button
+                  style={{
+                    padding: 0,
+                    fontSize: "100%",
+                    border: "none",
+                  }}
+                  variant="link"
+                  onClick={() => {
+                    setVoiceURI(undefined);
+                    window.location.reload();
+                  }}
+                >
+                  here
+                </Button>{" "}
+                to reset the app and keep the default voice.
+              </Form.Text>
             </Form.Group>
           </Card.Body>
         </Card>
