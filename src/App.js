@@ -36,6 +36,10 @@ export default function App() {
 
   const [timeUntilNextChange, setTimeUntilNextChange] = useState(0);
   const [currentAthlete, setCurrentAthlete] = useState(undefined);
+  const currentAthleteName =
+    currentAthlete !== undefined
+      ? athletes[currentAthlete].text || `Athlete ${currentAthlete + 1}`
+      : "";
 
   useEffect(() => {
     saveConfig({ athletes, startDelay, speechEnabled, voice: voiceURI });
@@ -53,6 +57,8 @@ export default function App() {
       ...athletesWithIndex,
     ].filter((a) => a.enabled)[0].index;
   }, [currentAthlete, athletes]);
+  const nextAthleteName =
+    athletes[nextAthlete].text || `Athlete ${nextAthlete + 1}`;
 
   const prevTimeRef = useRef();
 
@@ -60,7 +66,7 @@ export default function App() {
     if (!speechEnabled) {
       return;
     }
-    speakCommand(command, { nextAthlete: athletes[nextAthlete].text }, voice);
+    speakCommand(command, { nextAthlete: nextAthleteName }, voice);
   };
 
   useInterval(() => {
@@ -138,14 +144,10 @@ export default function App() {
           {running && (
             <>
               <h1 className="text-center display-2">
-                {currentAthlete === undefined
-                  ? "Wait"
-                  : athletes[currentAthlete].text}
+                {currentAthlete === undefined ? "Wait" : currentAthleteName}
               </h1>
 
-              <h2 className="text-center display-5">
-                🔜 {athletes[nextAthlete].text}
-              </h2>
+              <h2 className="text-center display-5">🔜 {nextAthleteName}</h2>
 
               <h3 className="text-center display-6">
                 ⏱️ {timeUntilNextChange}s
