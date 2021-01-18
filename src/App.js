@@ -274,12 +274,17 @@ export default function App() {
                 as="select"
                 onChange={(e) => handleVoiceChange(e.target.value)}
                 value={voiceURI}
+                disabled={voices.length === 0}
               >
-                {voices.map((voice) => (
-                  <option key={voice.voiceURI} value={voice.voiceURI}>
-                    {voice.name}
-                  </option>
-                ))}
+                {voices.length > 0 ? (
+                  voices.map((voice) => (
+                    <option key={voice.voiceURI} value={voice.voiceURI}>
+                      {voice.name}
+                    </option>
+                  ))
+                ) : (
+                  <option key="default">Default</option>
+                )}
               </Form.Control>
             </Form.Group>
           </Card.Body>
