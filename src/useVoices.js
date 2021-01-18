@@ -3,11 +3,17 @@ import { useEffect, useState } from "react";
 export function useVoices() {
   const [voices, setVoices] = useState([]);
 
-  useEffect(() => {
-    window.speechSynthesis.onvoiceschanged = () => {
-      setVoices(window.speechSynthesis.getVoices());
-    };
+  const updateVoices = () => {
+    setVoices(window.speechSynthesis.getVoices());
+  };
 
+  useEffect(() => {
+    if (typeof window.speechSynthesis === "undefined") {
+      return;
+    }
+
+    updateVoices();
+    window.speechSynthesis.onvoiceschanged = updateVoices;
     return () => (window.speechSynthesis.onvoiceschanged = undefined);
   }, []);
 
