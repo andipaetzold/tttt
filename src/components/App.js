@@ -20,7 +20,6 @@ import { VoiceSettings } from "./VoiceSettings";
 const initialConfig = loadConfig();
 
 export default function App() {
-  const [startTime, setStartTime] = useState(0);
   const [running, setRunning] = useState(false);
 
   const [startDelay, setStartDelay] = useState(initialConfig.startDelay);
@@ -59,6 +58,7 @@ export default function App() {
   const nextAthleteName =
     athletes[nextAthlete].text || `Athlete ${nextAthlete + 1}`;
 
+  const startTimeRef = useRef();
   const prevTimeRef = useRef();
 
   const speak = (command) => {
@@ -70,7 +70,7 @@ export default function App() {
 
   const changeToNextAthlete = () => {
     setCurrentAthlete(nextAthlete);
-    setStartTime(Date.now());
+    startTimeRef.current = Date.now();
     setTimeUntilNextChange(athletes[nextAthlete].time);
   };
 
@@ -84,8 +84,10 @@ export default function App() {
 
     const now = Date.now();
 
-    const secondsSinceStart = toSeconds(now - startTime);
-    const prevSecondsSinceStart = toSeconds(prevTimeRef.current - startTime);
+    const secondsSinceStart = toSeconds(now - startTimeRef.current);
+    const prevSecondsSinceStart = toSeconds(
+      prevTimeRef.current - startTimeRef.current
+    );
 
     if (secondsSinceStart !== prevSecondsSinceStart) {
       if (secondsSinceStart >= changeTime) {
@@ -102,8 +104,10 @@ export default function App() {
 
   const handleStart = () => {
     const now = Date.now();
-    setStartTime(now);
+
     prevTimeRef.current = now;
+    startTimeRef.current = now;
+
     setTimeUntilNextChange(startDelay > 0 ? startDelay : athletes[0].time);
     setCurrentAthlete(startDelay > 0 ? undefined : nextAthlete);
 
