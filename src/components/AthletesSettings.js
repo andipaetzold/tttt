@@ -23,7 +23,7 @@ export function AthletesSettings({ athletes, onChange }) {
               <Form.Control
                 style={{ background: !athlete.enabled && "#6c757d80" }}
                 type="text"
-                placeholder={`Name`}
+                placeholder="Name"
                 value={athlete.text}
                 onChange={(e) =>
                   onChange(
@@ -36,7 +36,8 @@ export function AthletesSettings({ athletes, onChange }) {
               <Form.Control
                 style={{ background: !athlete.enabled && "#6c757d80" }}
                 type="number"
-                placeholder={`Time (in seconds)`}
+                placeholder="Time (in seconds)"
+                min={1}
                 value={athlete.time}
                 onChange={(e) =>
                   onChange(
