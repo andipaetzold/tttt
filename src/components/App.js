@@ -20,7 +20,7 @@ import { VoiceSettings } from "./VoiceSettings";
 const initialConfig = loadConfig();
 
 export default function App() {
-  const [running, setRunning] = useState(false);
+  const [state, setState] = useState("stopped");
 
   const [startDelay, setStartDelay] = useState(initialConfig.startDelay);
   const [speechEnabled, setSpeechEnabled] = useState(
@@ -62,6 +62,7 @@ export default function App() {
 
   const startTimeRef = useRef();
   const prevTimeRef = useRef();
+  const pauseTimeRef = useRef();
 
   const speak = (command) => {
     if (!speechEnabled) {
@@ -72,12 +73,17 @@ export default function App() {
 
   const changeToNextAthlete = () => {
     setCurrentAthlete(nextAthlete);
-    startTimeRef.current = Date.now();
     setTimeUntilNextChange(athletes[nextAthlete].time);
+
+    const now = Date.now();
+    startTimeRef.current = now;
+    if (state === "paused") {
+      pauseTimeRef.current = now;
+    }
   };
 
   useInterval(() => {
-    if (!running) {
+    if (state !== "running") {
       return;
     }
 
@@ -113,11 +119,22 @@ export default function App() {
     setTimeUntilNextChange(startDelay > 0 ? startDelay : athletes[0].time);
     setCurrentAthlete(startDelay > 0 ? undefined : nextAthlete);
 
-    setRunning(true);
+    setState("running");
   };
 
   const handleStop = () => {
-    setRunning(false);
+    setState("stopped");
+  };
+
+  const handlePause = () => {
+    setState("paused");
+    pauseTimeRef.current = Date.now();
+  };
+
+  const handleResume = () => {
+    setState("running");
+    startTimeRef.current =
+      Date.now() - (pauseTimeRef.current - startTimeRef.current);
   };
 
   return (
@@ -126,7 +143,7 @@ export default function App() {
 
       <Container>
         <Jumbotron className="mb-2">
-          {running && (
+          {state !== "stopped" ? (
             <>
               <h1 className="text-center display-2">
                 {currentAthlete === undefined
@@ -150,20 +167,53 @@ export default function App() {
                     : athletes[currentAthlete].time
                 }
               />
-            </>
-          )}
 
-          <div className="mt-4 text-center">
-            {running ? (
-              <Button variant="danger" onClick={handleStop}>
-                Stop
-              </Button>
-            ) : (
+              <div className="mt-4 text-center">
+                {state !== "stopped" ? (
+                  <>
+                    <Button
+                      variant="danger"
+                      className="mr-1"
+                      onClick={handleStop}
+                    >
+                      Stop
+                    </Button>
+                    {state === "paused" ? (
+                      <Button
+                        variant="info"
+                        className="mr-1"
+                        onClick={handleResume}
+                      >
+                        Resume
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="info"
+                        className="mr-1"
+                        onClick={handlePause}
+                      >
+                        Pause
+                      </Button>
+                    )}
+
+                    <Button variant="warning" onClick={changeToNextAthlete}>
+                      Skip
+                    </Button>
+                  </>
+                ) : (
+                  <Button variant="primary" onClick={handleStart} size="lg">
+                    Start
+                  </Button>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="text-center">
               <Button variant="primary" onClick={handleStart} size="lg">
                 Start
               </Button>
-            )}
-          </div>
+            </div>
+          )}
         </Jumbotron>
 
         <Card className="mb-2">
@@ -177,7 +227,6 @@ export default function App() {
                 type="number"
                 value={startDelay}
                 onChange={(e) => setStartDelay(+e.target.value)}
-                disabled={running}
                 min={0}
               />
             </Form.Group>
