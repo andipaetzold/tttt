@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   ButtonGroup,
   Col,
@@ -6,6 +7,7 @@ import {
   Row,
   ToggleButton,
 } from "react-bootstrap";
+import { faSkullCrossbones } from "@fortawesome/free-solid-svg-icons";
 
 export function AthletesSettings({ athletes, onChange }) {
   return (
@@ -68,7 +70,7 @@ export function AthletesSettings({ athletes, onChange }) {
                       )
                     }
                   >
-                    ☠️
+                    <FontAwesomeIcon icon={faSkullCrossbones} />
                   </ToggleButton>
                 </ButtonGroup>
               </InputGroup.Append>

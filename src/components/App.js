@@ -1,3 +1,12 @@
+import { faClock } from "@fortawesome/free-regular-svg-icons";
+import {
+  faArrowRight,
+  faForward,
+  faPause,
+  faPlay,
+  faStop,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useInterval from "@use-it/interval";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -152,11 +161,12 @@ export default function App() {
               </h1>
 
               <h2 className="text-center display-5">
-                🔜 {getAthleteName(nextAthlete)}
+                <FontAwesomeIcon icon={faArrowRight} />{" "}
+                {getAthleteName(nextAthlete)}
               </h2>
 
               <h3 className="text-center display-6">
-                ⏱️ {timeUntilNextChange}s
+                <FontAwesomeIcon icon={faClock} /> {timeUntilNextChange}s
               </h3>
               <ProgressBar
                 style={{ transform: "scaleX(-1)", background: "white" }}
@@ -169,48 +179,32 @@ export default function App() {
               />
 
               <div className="mt-4 text-center">
-                {state !== "stopped" ? (
-                  <>
-                    <Button
-                      variant="danger"
-                      className="mr-1"
-                      onClick={handleStop}
-                    >
-                      Stop
-                    </Button>
-                    {state === "paused" ? (
-                      <Button
-                        variant="info"
-                        className="mr-1"
-                        onClick={handleResume}
-                      >
-                        Resume
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="info"
-                        className="mr-1"
-                        onClick={handlePause}
-                      >
-                        Pause
-                      </Button>
-                    )}
-
-                    <Button variant="warning" onClick={changeToNextAthlete}>
-                      Skip
-                    </Button>
-                  </>
+                <Button variant="danger" className="mr-1" onClick={handleStop}>
+                  <FontAwesomeIcon icon={faStop} /> Stop
+                </Button>
+                {state === "paused" ? (
+                  <Button
+                    variant="info"
+                    className="mr-1"
+                    onClick={handleResume}
+                  >
+                    <FontAwesomeIcon icon={faPlay} /> Resume
+                  </Button>
                 ) : (
-                  <Button variant="primary" onClick={handleStart} size="lg">
-                    Start
+                  <Button variant="info" className="mr-1" onClick={handlePause}>
+                    <FontAwesomeIcon icon={faPause} /> Pause
                   </Button>
                 )}
+
+                <Button variant="warning" onClick={changeToNextAthlete}>
+                  <FontAwesomeIcon icon={faForward} /> Skip
+                </Button>
               </div>
             </>
           ) : (
             <div className="text-center">
               <Button variant="primary" onClick={handleStart} size="lg">
-                Start
+                <FontAwesomeIcon icon={faPlay} /> Start
               </Button>
             </div>
           )}
