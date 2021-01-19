@@ -28,16 +28,20 @@ export default function App() {
   );
   const [athletes, setAthletes] = useState(initialConfig.athletes);
 
+  const getAthleteName = (athleteIndex) => {
+    if (athleteIndex === undefined) {
+      return "";
+    }
+
+    return athletes[athleteIndex].text || `Athlete ${athleteIndex + 1}`;
+  };
+
   const voices = useVoices();
   const [voiceURI, setVoiceURI] = useState(initialConfig.voice);
   const voice = voices.find((v) => v.voiceURI === voiceURI);
 
   const [timeUntilNextChange, setTimeUntilNextChange] = useState(0);
   const [currentAthlete, setCurrentAthlete] = useState(undefined);
-  const currentAthleteName =
-    currentAthlete !== undefined
-      ? athletes[currentAthlete].text || `Athlete ${currentAthlete + 1}`
-      : "";
 
   useEffect(() => {
     saveConfig({ athletes, startDelay, speechEnabled, voice: voiceURI });
@@ -55,8 +59,6 @@ export default function App() {
       ...athletesWithIndex,
     ].filter((a) => a.enabled)[0].index;
   }, [currentAthlete, athletes]);
-  const nextAthleteName =
-    athletes[nextAthlete].text || `Athlete ${nextAthlete + 1}`;
 
   const startTimeRef = useRef();
   const prevTimeRef = useRef();
@@ -65,7 +67,7 @@ export default function App() {
     if (!speechEnabled) {
       return;
     }
-    speakCommand(command, { nextAthlete: nextAthleteName }, voice);
+    speakCommand(command, { nextAthlete: getAthleteName(nextAthlete) }, voice);
   };
 
   const changeToNextAthlete = () => {
@@ -127,10 +129,14 @@ export default function App() {
           {running && (
             <>
               <h1 className="text-center display-2">
-                {currentAthlete === undefined ? "Wait" : currentAthleteName}
+                {currentAthlete === undefined
+                  ? "Wait"
+                  : getAthleteName(currentAthlete)}
               </h1>
 
-              <h2 className="text-center display-5">🔜 {nextAthleteName}</h2>
+              <h2 className="text-center display-5">
+                🔜 {getAthleteName(nextAthlete)}
+              </h2>
 
               <h3 className="text-center display-6">
                 ⏱️ {timeUntilNextChange}s
