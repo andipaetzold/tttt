@@ -68,6 +68,12 @@ export default function App() {
     speakCommand(command, { nextAthlete: nextAthleteName }, voice);
   };
 
+  const changeToNextAthlete = () => {
+    setCurrentAthlete(nextAthlete);
+    setStartTime(Date.now());
+    setTimeUntilNextChange(athletes[nextAthlete].time);
+  };
+
   useInterval(() => {
     if (!running) {
       return;
@@ -81,24 +87,13 @@ export default function App() {
     const secondsSinceStart = toSeconds(now - startTime);
     const prevSecondsSinceStart = toSeconds(prevTimeRef.current - startTime);
 
-    setTimeUntilNextChange(Math.max(changeTime - secondsSinceStart, 0));
-
     if (secondsSinceStart !== prevSecondsSinceStart) {
       if (secondsSinceStart >= changeTime) {
-        if (speechEnabled) {
-          if (currentAthlete === undefined) {
-            speak("start");
-          } else {
-            speak(0);
-          }
-        }
-
-        setCurrentAthlete(nextAthlete);
-        setStartTime(now);
+        speak(currentAthlete === undefined ? "start" : 0);
+        changeToNextAthlete();
       } else {
-        if (speechEnabled) {
-          speak(changeTime - secondsSinceStart);
-        }
+        speak(changeTime - secondsSinceStart);
+        setTimeUntilNextChange(Math.max(changeTime - secondsSinceStart, 0));
       }
     }
 
