@@ -189,6 +189,7 @@ export default function App() {
                 checked={speechEnabled}
                 onChange={(e) => setSpeechEnabled(e.target.checked)}
               />
+              <Form.Text>Voice Output is not supported on iOS</Form.Text>
             </Form.Group>
             <VoiceSettings
               voices={voices}
