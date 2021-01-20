@@ -13,7 +13,8 @@ jobs:
         with:
           persist-credentials: false
       - name: Switch node version
-        run: nvm use
+        shell: bash -l {0}
+        run: nvm install
       - name: Install
         run: npm install
       - name: Build
