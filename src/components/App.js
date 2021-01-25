@@ -21,6 +21,7 @@ import { loadConfig, saveConfig } from "../common/config";
 import { speakCommand } from "../common/speech";
 import { toSeconds } from "../common/util";
 import { useVoices } from "../hooks/useVoices";
+import { useWakeLock } from "../hooks/useWakeLock";
 import { AthletesSettings } from "./AthletesSettings";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
@@ -30,6 +31,8 @@ const initialConfig = loadConfig();
 
 export default function App() {
   const [state, setState] = useState("stopped");
+
+  useWakeLock(state === "running" || state === "paused");
 
   const [startDelay, setStartDelay] = useState(initialConfig.startDelay);
   const [speechEnabled, setSpeechEnabled] = useState(
