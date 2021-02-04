@@ -18,6 +18,10 @@ import {
   ProgressBar,
 } from "react-bootstrap";
 import { loadConfig, saveConfig } from "../common/config";
+import {
+  DEFAULT_ATHLETE_NAMES,
+  DEFAULT_TIME_PER_ATHLETE,
+} from "../common/constants";
 import { speakCommand } from "../common/speech";
 import { toSeconds } from "../common/util";
 import { useVoices } from "../hooks/useVoices";
@@ -225,6 +229,30 @@ export default function App() {
                 value={startDelay}
                 onChange={(e) => setStartDelay(+e.target.value)}
                 min={0}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="athleteCount">
+              <Form.Label>Athlete Count</Form.Label>
+              <Form.Control
+                type="number"
+                value={athletes.length}
+                onChange={(e) => {
+                  const newCount = Math.max(
+                    1,
+                    Math.min(DEFAULT_ATHLETE_NAMES.length, +e.target.value)
+                  );
+                  const newAthletes = [...new Array(newCount).keys()].map(
+                    (i) => ({
+                      text: athletes[i]?.text ?? DEFAULT_ATHLETE_NAMES[i],
+                      time: athletes[i]?.time ?? DEFAULT_TIME_PER_ATHLETE,
+                      enabled: athletes[i]?.enabled ?? true,
+                    })
+                  );
+                  setAthletes(newAthletes);
+                }}
+                min={1}
+                max={DEFAULT_ATHLETE_NAMES.length}
               />
             </Form.Group>
 
