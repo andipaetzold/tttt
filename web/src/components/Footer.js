@@ -27,7 +27,7 @@ export function Footer() {
       <p>
         <small>
           <a
-            href="paypal.me/andipaetzold"
+            href="https://paypal.me/andipaetzold"
             rel="noopener noreferrer"
             target="_blank"
           >
