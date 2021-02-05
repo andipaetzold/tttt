@@ -9,10 +9,10 @@
     "@fortawesome/free-regular-svg-icons": "5.15.2",
     "@fortawesome/free-solid-svg-icons": "5.15.2",
     "@fortawesome/react-fontawesome": "0.1.14",
-    "@use-it/interval": "^1.0.0",
-    "bootstrap": "^4.5.3",
+    "@use-it/interval": "1.0.0",
+    "bootstrap": "4.5.3",
     "react": "17.0.1",
-    "react-bootstrap": "^1.4.3",
+    "react-bootstrap": "1.4.3",
     "react-dom": "17.0.1",
     "react-scripts": "4.0.1"
   },
