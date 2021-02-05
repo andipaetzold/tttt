@@ -16,13 +16,15 @@ jobs:
         shell: bash -l {0}
         run: nvm install
       - name: Install
-        run: npm install
+        run: npm ci
+        working-directory: ./web
       - name: Build
         run: npm run build
+        working-directory: ./web
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: build
+          FOLDER: ./web/build
           CLEAN: true
