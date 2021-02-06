@@ -1,6 +1,6 @@
 {
-  "name": "tttt",
-  "version": "0.1.0",
+  "name": "tttt-web",
+  "version": "0.0.0",
   "private": true,
   "homepage": ".",
   "dependencies": {
