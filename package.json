@@ -1,40 +1,54 @@
 {
-  "name": "tttt-web",
-  "version": "0.0.0",
-  "private": true,
-  "homepage": ".",
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "1.2.34",
-    "@fortawesome/free-brands-svg-icons": "5.15.2",
-    "@fortawesome/free-regular-svg-icons": "5.15.2",
-    "@fortawesome/free-solid-svg-icons": "5.15.2",
-    "@fortawesome/react-fontawesome": "0.1.14",
-    "@use-it/interval": "1.0.0",
-    "bootstrap": "4.6.0",
-    "react": "17.0.1",
-    "react-bootstrap": "1.4.3",
-    "react-dom": "17.0.1",
-    "react-scripts": "4.0.2"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "name": "tttt",
+    "version": "0.0.0",
+    "private": true,
+    "license": "MIT",
+    "author": {
+        "name": "Andi Pätzold",
+        "email": "github@andipaetzold.com",
+        "url": "https://github.com/andipaetzold"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/andipaetzold/race-evaluator.git"
+    },
+    "bugs": {
+      "url": "https://github.com/andipaetzold/tttt/issues",
+      "email": "github@andipaetzold.com"
+    },
+    "homepage": ".",
+    "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "1.2.34",
+        "@fortawesome/free-brands-svg-icons": "5.15.2",
+        "@fortawesome/free-regular-svg-icons": "5.15.2",
+        "@fortawesome/free-solid-svg-icons": "5.15.2",
+        "@fortawesome/react-fontawesome": "0.1.14",
+        "@use-it/interval": "1.0.0",
+        "bootstrap": "4.6.0",
+        "react": "17.0.1",
+        "react-bootstrap": "1.4.3",
+        "react-dom": "17.0.1",
+        "react-scripts": "4.0.2"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
 }
