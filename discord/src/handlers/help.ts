@@ -7,6 +7,8 @@ Commands:
 \`\`\`
 ${PREFIX}join                                : I'll join your voice channel
 ${PREFIX}leave                               : Leave the voice channel
+${PREFIX}start                               : Start the timer
+${PREFIX}stop                                : Stop the timer
 
 ${PREFIX}config                              : Get the current configuration
 ${PREFIX}config startDelay <number>          : Sets the start delay in seconds
