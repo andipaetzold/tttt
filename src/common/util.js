@@ -1,3 +1,3 @@
 export function toSeconds(ms) {
-  return Math.round(ms / 1_000);
+    return Math.round(ms / 1_000);
 }
