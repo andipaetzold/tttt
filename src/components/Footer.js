@@ -16,7 +16,7 @@ export function Footer() {
           </a>{" "}
           by{" "}
           <a
-            href="https://zwiftpower.com/profile.php?z=1861132"
+            href="mailto:tttt@andipaetzold.com"
             rel="noopener noreferrer"
             target="_blank"
           >
