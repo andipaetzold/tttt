@@ -59,7 +59,10 @@ export default function App() {
         if (!speechEnabled) {
             return;
         }
-        speakCommand(command, { nextAthlete: getAthleteName(nextAthlete) });
+        speakCommand(command, {
+            nextAthlete: getAthleteName(nextAthlete),
+            started: currentAthlete !== undefined,
+        });
     };
 
     const changeToNextAthlete = () => {
@@ -86,11 +89,10 @@ export default function App() {
         const prevSecondsSinceStart = toSeconds(prevTimeRef.current - startTimeRef.current);
 
         if (secondsSinceStart !== prevSecondsSinceStart) {
+            speak(Math.max(0, changeTime - secondsSinceStart));
             if (secondsSinceStart >= changeTime) {
-                speak(currentAthlete === undefined ? "start" : 0);
                 changeToNextAthlete();
             } else {
-                speak(changeTime - secondsSinceStart);
                 setTimeUntilNextChange(Math.max(changeTime - secondsSinceStart, 0));
             }
         }
