@@ -1,9 +1,19 @@
 import { faClock } from "@fortawesome/free-regular-svg-icons";
-import { faArrowRight, faCompress, faExpand, faForward, faPause, faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
+import {
+    faArrowRight,
+    faCompress,
+    faExpand,
+    faForward,
+    faPause,
+    faPlay,
+    faStop,
+    faVolumeMute,
+    faVolumeUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useInterval from "@use-it/interval";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Button, Card, Container, Form, Jumbotron, ProgressBar } from "react-bootstrap";
+import { Button, Card, Container, Form, Jumbotron, ProgressBar, ToggleButton } from "react-bootstrap";
 import { loadConfig, saveConfig } from "../common/config";
 import { DEFAULT_ATHLETE_NAMES, DEFAULT_TIME_PER_ATHLETE } from "../common/constants";
 import { speakCommand } from "../common/speech";
@@ -187,12 +197,22 @@ export default function App() {
                     )}
 
                     <div className="position-absolute" style={{ right: 16, bottom: 16 }}>
+                        {speechEnabled ? (
+                            <Button size="sm" variant="secondary" onClick={() => setSpeechEnabled(false)}>
+                                <FontAwesomeIcon icon={faVolumeUp} />
+                            </Button>
+                        ) : (
+                            <Button size="sm" variant="secondary" onClick={() => setSpeechEnabled(true)}>
+                                <FontAwesomeIcon icon={faVolumeMute} />
+                            </Button>
+                        )}
+
                         {fullscreenActive ? (
-                            <Button size="sm" variant="secondary" onClick={leaveFullscreen}>
+                            <Button className="ml-2" size="sm" variant="secondary" onClick={leaveFullscreen}>
                                 <FontAwesomeIcon icon={faCompress} /> Leave Fullscreen
                             </Button>
                         ) : (
-                            <Button size="sm" variant="secondary" onClick={enterFullscreen}>
+                            <Button className="ml-2" size="sm" variant="secondary" onClick={enterFullscreen}>
                                 <FontAwesomeIcon icon={faExpand} /> Fullscreen
                             </Button>
                         )}
@@ -239,16 +259,6 @@ export default function App() {
                                 min={1}
                                 max={DEFAULT_ATHLETE_NAMES.length}
                             />
-                        </Form.Group>
-
-                        <Form.Group controlId="speechEnabled">
-                            <Form.Check
-                                type="checkbox"
-                                label="Voice Output"
-                                checked={speechEnabled}
-                                onChange={(e) => setSpeechEnabled(e.target.checked)}
-                            />
-                            <Form.Text>Voice Output is not supported on iOS</Form.Text>
                         </Form.Group>
                     </Card.Body>
                 </Card>
