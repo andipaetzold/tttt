@@ -2,4 +2,4 @@ export const DEFAULT_ATHLETE_NAMES = ["Amelia", "Bowie", "Coco", "Dan", "Emma", 
 
 export const DEFAULT_START_DELAY = 0;
 export const DEFAULT_TIME_PER_ATHLETE = 30;
-export const DEFAULT_SPEECH_ENABLED = false;
+export const DEFAULT_SPEECH_ENABLED = true;
