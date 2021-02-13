@@ -8,14 +8,12 @@ import { loadConfig, saveConfig } from "../common/config";
 import { DEFAULT_ATHLETE_NAMES, DEFAULT_TIME_PER_ATHLETE } from "../common/constants";
 import { speakCommand } from "../common/speech";
 import { toSeconds } from "../common/util";
-import { useVoices } from "../hooks/useVoices";
 import { useWakeLock } from "../hooks/useWakeLock";
 import { AthletesSettings } from "./AthletesSettings";
 import { CopyButton } from "./CopyButton";
 import { DiscordBot } from "./DiscordBot";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
-import { VoiceSettings } from "./VoiceSettings";
 
 const initialConfig = loadConfig();
 
@@ -36,16 +34,12 @@ export default function App() {
         return athletes[athleteIndex].text || `Athlete ${athleteIndex + 1}`;
     };
 
-    const voices = useVoices();
-    const [voiceURI, setVoiceURI] = useState(initialConfig.voice);
-    const voice = voices.find((v) => v.voiceURI === voiceURI);
-
     const [timeUntilNextChange, setTimeUntilNextChange] = useState(0);
     const [currentAthlete, setCurrentAthlete] = useState(undefined);
 
     useEffect(() => {
-        saveConfig({ athletes, startDelay, speechEnabled, voice: voiceURI });
-    }, [athletes, startDelay, speechEnabled, voiceURI]);
+        saveConfig({ athletes, startDelay, speechEnabled });
+    }, [athletes, startDelay, speechEnabled]);
 
     const nextAthlete = useMemo(() => {
         const athletesWithIndex = athletes.map((a, ai) => ({ ...a, index: ai }));
@@ -65,7 +59,7 @@ export default function App() {
         if (!speechEnabled) {
             return;
         }
-        speakCommand(command, { nextAthlete: getAthleteName(nextAthlete) }, voice);
+        speakCommand(command, { nextAthlete: getAthleteName(nextAthlete) });
     };
 
     const changeToNextAthlete = () => {
@@ -228,7 +222,6 @@ export default function App() {
                             />
                             <Form.Text>Voice Output is not supported on iOS</Form.Text>
                         </Form.Group>
-                        <VoiceSettings voices={voices} voice={voice} onChange={(v) => setVoiceURI(v?.voiceURI)} />
                     </Card.Body>
                 </Card>
 

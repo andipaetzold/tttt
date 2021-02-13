@@ -1,5 +1,4 @@
 const voiceCommands = {
-    voiceChanged: () => "Go faster!",
     start: () => "Start",
     15: ({ nextAthlete }) => `${nextAthlete}. Get ready.`,
     10: () => "Change in 10",
@@ -9,9 +8,9 @@ const voiceCommands = {
     0: ({ nextAthlete }) => `Change to ${nextAthlete}`,
 };
 
-export function speakCommand(command, args, voice) {
+export function speakCommand(command, args) {
     if (voiceCommands[command]) {
-        speak(voiceCommands[command](args), voice);
+        speak(voiceCommands[command](args));
     }
 }
 
