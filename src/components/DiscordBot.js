@@ -25,7 +25,16 @@ export function DiscordBot() {
 
                     <div className="d-flex justify-content-end">
                         <a
-                            className="btn btn-primary"
+                            className="btn btn-light"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            href="https://andipaetzold.github.io/tttt-discord"
+                        >
+                            Documentation
+                        </a>
+
+                        <a
+                            className="btn btn-primary ml-2"
                             target="_blank"
                             rel="noopener noreferrer"
                             href="https://discord.com/api/oauth2/authorize?client_id=806979974594560060&amp;permissions=3155968&amp;scope=bot"
