@@ -1,5 +1,5 @@
 import { faClock } from "@fortawesome/free-regular-svg-icons";
-import { faArrowRight, faForward, faPause, faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faCompress, faExpand, faForward, faPause, faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useInterval from "@use-it/interval";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -14,11 +14,18 @@ import { CopyButton } from "./CopyButton";
 import { DiscordBot } from "./DiscordBot";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
+import { useFullScreenHandle } from "react-full-screen";
 
 const initialConfig = loadConfig();
 
 export default function App() {
     const [state, setState] = useState("stopped");
+    const {
+        node: fullscreenRef,
+        active: fullscreenActive,
+        enter: enterFullscreen,
+        exit: leaveFullscreen,
+    } = useFullScreenHandle();
 
     useWakeLock(state === "running" || state === "paused");
 
@@ -131,7 +138,7 @@ export default function App() {
             <Header />
 
             <Container>
-                <Jumbotron className="mb-2">
+                <Jumbotron className="mb-2 position-relative" ref={fullscreenRef}>
                     {state !== "stopped" ? (
                         <>
                             <h1 className="text-center display-2">
@@ -178,6 +185,18 @@ export default function App() {
                             </Button>
                         </div>
                     )}
+
+                    <div className="position-absolute" style={{ right: 16, bottom: 16 }}>
+                        {fullscreenActive ? (
+                            <Button size="sm" variant="secondary" onClick={leaveFullscreen}>
+                                <FontAwesomeIcon icon={faCompress} /> Leave Fullscreen
+                            </Button>
+                        ) : (
+                            <Button size="sm" variant="secondary" onClick={enterFullscreen}>
+                                <FontAwesomeIcon icon={faExpand} /> Fullscreen
+                            </Button>
+                        )}
+                    </div>
                 </Jumbotron>
 
                 <Card className="mb-2">
