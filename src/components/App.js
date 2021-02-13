@@ -7,7 +7,7 @@ import { Button, Card, Container, Form, Jumbotron, ProgressBar } from "react-boo
 import { loadConfig, saveConfig } from "../common/config";
 import { DEFAULT_ATHLETE_NAMES, DEFAULT_TIME_PER_ATHLETE } from "../common/constants";
 import { speakCommand } from "../common/speech";
-import { toSeconds } from "../common/util";
+import { toSeconds, secondsToString } from "../common/util";
 import { useWakeLock } from "../hooks/useWakeLock";
 import { AthletesSettings } from "./AthletesSettings";
 import { CopyButton } from "./CopyButton";
@@ -143,7 +143,7 @@ export default function App() {
                             </h2>
 
                             <h3 className="text-center display-6">
-                                <FontAwesomeIcon icon={faClock} /> {timeUntilNextChange}s
+                                <FontAwesomeIcon icon={faClock} /> {secondsToString(timeUntilNextChange)}
                             </h3>
                             <ProgressBar
                                 style={{ transform: "scaleX(-1)", background: "white" }}
@@ -173,7 +173,8 @@ export default function App() {
                     ) : (
                         <div className="text-center">
                             <Button variant="primary" onClick={handleStart} size="lg">
-                                <FontAwesomeIcon icon={faPlay} /> Start
+                                <FontAwesomeIcon icon={faPlay} /> Start{" "}
+                                {startDelay > 0 && `in ${secondsToString(startDelay)}`}
                             </Button>
                         </div>
                     )}
