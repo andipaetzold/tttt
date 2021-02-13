@@ -33,7 +33,8 @@ export function AthletesSettings({ athletes, onChange }) {
                                 style={{ background: !athlete.enabled && "#6c757d80" }}
                                 type="number"
                                 placeholder="Time (in seconds)"
-                                min={1}
+                                min={5}
+                                step={5}
                                 value={athlete.time}
                                 onChange={(e) =>
                                     onChange(
