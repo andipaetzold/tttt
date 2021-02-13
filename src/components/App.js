@@ -182,7 +182,12 @@ export default function App() {
 
                 <Card className="mb-2">
                     <Card.Body>
-                        <AthletesSettings athletes={athletes} onChange={setAthletes} />
+                        <AthletesSettings
+                            athletes={athletes}
+                            onChange={setAthletes}
+                            currentAthlete={state !== "stopped" && currentAthlete}
+                            nextAthlete={state !== "stopped" && nextAthlete}
+                        />
 
                         <h3>Settings</h3>
                         <Form.Group controlId="startDelay">

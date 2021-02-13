@@ -3,10 +3,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ButtonGroup, Col, Form, InputGroup, Row, ToggleButton } from "react-bootstrap";
 import { CopyButton } from "./CopyButton";
 
-export function AthletesSettings({ athletes, onChange }) {
+export function AthletesSettings({ athletes, onChange, currentAthlete, nextAthlete }) {
     const discordCommand = `!t config athletes ${athletes
         .map((athlete) => `${athlete.text.trim().replaceAll(" ", "_").replaceAll(" ", "_")}:${athlete.time}`)
         .join(" ")}`;
+
+    const getBackgroundColor = (athleteIndex) => {
+        if (athleteIndex === currentAthlete) {
+            return "#28a745";
+        }
+
+        if (athleteIndex === nextAthlete) {
+            return "#ffc107";
+        }
+
+        if (!athletes[athleteIndex].enabled) {
+            return "#6c757d80";
+        }
+    };
 
     return (
         <>
@@ -19,7 +33,7 @@ export function AthletesSettings({ athletes, onChange }) {
                     <Col sm={12}>
                         <InputGroup>
                             <Form.Control
-                                style={{ background: !athlete.enabled && "#6c757d80" }}
+                                style={{ background: getBackgroundColor(athleteIndex) }}
                                 type="text"
                                 placeholder="Name"
                                 value={athlete.text}
@@ -30,7 +44,7 @@ export function AthletesSettings({ athletes, onChange }) {
                                 }
                             />
                             <Form.Control
-                                style={{ background: !athlete.enabled && "#6c757d80" }}
+                                style={{ background: getBackgroundColor(athleteIndex) }}
                                 type="number"
                                 placeholder="Time (in seconds)"
                                 min={5}
