@@ -193,6 +193,7 @@ export default function App() {
                                 value={startDelay}
                                 onChange={(e) => setStartDelay(+e.target.value)}
                                 min={0}
+                                step={30}
                             />
                         </Form.Group>
 
