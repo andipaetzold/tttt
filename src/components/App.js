@@ -184,7 +184,7 @@ export default function App() {
                         <h3>Settings</h3>
                         <Form.Group controlId="startDelay">
                             <Form.Label>
-                                Start Delay (in seconds) <CopyButton command={`!t config startDelay ${startDelay}`} />
+                                Start Delay (in seconds) <CopyButton command={`!t config delay ${startDelay}`} />
                             </Form.Label>
                             <Form.Control
                                 type="number"
