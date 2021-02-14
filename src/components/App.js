@@ -147,9 +147,9 @@ export default function App() {
             <Header />
 
             <Container>
-                <Jumbotron className="mb-2 position-relative" ref={fullscreenRef}>
+                <Jumbotron className="mb-2 position-relative d-flex flex-column align-items-stretchs justify-content-center" ref={fullscreenRef}>
                     {state !== "stopped" ? (
-                        <>
+                        <div>
                             <h1 className="text-center display-2">
                                 {currentAthlete === undefined ? "Wait" : getAthleteName(currentAthlete)}
                             </h1>
@@ -185,7 +185,7 @@ export default function App() {
                                     <FontAwesomeIcon icon={faForward} /> Skip
                                 </Button>
                             </div>
-                        </>
+                        </div>
                     ) : (
                         <div className="text-center">
                             <Button variant="primary" onClick={handleStart} size="lg">
