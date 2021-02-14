@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ButtonGroup, Col, Form, InputGroup, Row, ToggleButton } from "react-bootstrap";
 import { CopyButton } from "./CopyButton";
 
-export function AthletesSettings({ athletes, onChange, currentAthlete, nextAthlete }) {
+export function AthletesSettings({ athletes, onChange, currentAthlete, nextAthlete, running }) {
     const discordCommand = `!t config athletes ${athletes
         .map((athlete) => `${athlete.text.trim().replaceAll(" ", "_").replaceAll(" ", "_")}:${athlete.time}`)
         .join(" ")}`;
@@ -42,6 +42,7 @@ export function AthletesSettings({ athletes, onChange, currentAthlete, nextAthle
                                         athletes.map((a, ai) => (ai === athleteIndex ? { ...a, text: e.target.value } : a))
                                     )
                                 }
+                                disabled={running}
                             />
                             <Form.Control
                                 style={{ background: getBackgroundColor(athleteIndex) }}

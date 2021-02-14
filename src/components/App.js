@@ -13,7 +13,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useInterval from "@use-it/interval";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Button, Card, Container, Form, Jumbotron, ProgressBar, ToggleButton } from "react-bootstrap";
+import { Button, Card, Container, Form, Jumbotron, ProgressBar, Row, Col } from "react-bootstrap";
 import { loadConfig, saveConfig } from "../common/config";
 import { DEFAULT_ATHLETE_NAMES, DEFAULT_TIME_PER_ATHLETE } from "../common/constants";
 import { speakCommand } from "../common/speech";
@@ -226,40 +226,52 @@ export default function App() {
                             onChange={setAthletes}
                             currentAthlete={state !== "stopped" && currentAthlete}
                             nextAthlete={state !== "stopped" && nextAthlete}
+                            running={state !== "stopped"}
                         />
 
                         <h3>Settings</h3>
-                        <Form.Group controlId="startDelay">
-                            <Form.Label>
-                                Start Delay (in seconds) <CopyButton command={`!t config delay ${startDelay}`} />
-                            </Form.Label>
-                            <Form.Control
-                                type="number"
-                                value={startDelay}
-                                onChange={(e) => setStartDelay(+e.target.value)}
-                                min={0}
-                                step={30}
-                            />
-                        </Form.Group>
 
-                        <Form.Group controlId="athleteCount">
-                            <Form.Label>Athlete Count</Form.Label>
-                            <Form.Control
-                                type="number"
-                                value={athletes.length}
-                                onChange={(e) => {
-                                    const newCount = Math.max(1, Math.min(DEFAULT_ATHLETE_NAMES.length, +e.target.value));
-                                    const newAthletes = [...new Array(newCount).keys()].map((i) => ({
-                                        text: athletes[i]?.text ?? DEFAULT_ATHLETE_NAMES[i],
-                                        time: athletes[i]?.time ?? DEFAULT_TIME_PER_ATHLETE,
-                                        enabled: athletes[i]?.enabled ?? true,
-                                    }));
-                                    setAthletes(newAthletes);
-                                }}
-                                min={1}
-                                max={DEFAULT_ATHLETE_NAMES.length}
-                            />
-                        </Form.Group>
+                        <Row>
+                            <Col sm={12} md={6}>
+                                <Form.Group controlId="startDelay">
+                                    <Form.Label>
+                                        Start Delay (in seconds) <CopyButton command={`!t config delay ${startDelay}`} />
+                                    </Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        value={startDelay}
+                                        onChange={(e) => setStartDelay(+e.target.value)}
+                                        min={0}
+                                        step={30}
+                                        disabled={state !== "stopped"}
+                                    />
+                                </Form.Group>
+                            </Col>
+                            <Col sm={12} md={6}>
+                                <Form.Group controlId="athleteCount">
+                                    <Form.Label>Athlete Count</Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        value={athletes.length}
+                                        onChange={(e) => {
+                                            const newCount = Math.max(
+                                                1,
+                                                Math.min(DEFAULT_ATHLETE_NAMES.length, +e.target.value)
+                                            );
+                                            const newAthletes = [...new Array(newCount).keys()].map((i) => ({
+                                                text: athletes[i]?.text ?? DEFAULT_ATHLETE_NAMES[i],
+                                                time: athletes[i]?.time ?? DEFAULT_TIME_PER_ATHLETE,
+                                                enabled: athletes[i]?.enabled ?? true,
+                                            }));
+                                            setAthletes(newAthletes);
+                                        }}
+                                        min={1}
+                                        max={DEFAULT_ATHLETE_NAMES.length}
+                                        disabled={state !== "stopped"}
+                                    />
+                                </Form.Group>
+                            </Col>
+                        </Row>
                     </Card.Body>
                 </Card>
 

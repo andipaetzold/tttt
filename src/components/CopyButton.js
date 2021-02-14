@@ -23,7 +23,7 @@ export function CopyButton({ command }) {
             placement="right"
             overlay={<Tooltip id="tooltip-copy-athletes">{copied ? "Copied!" : "Copy Discord Bot command"}</Tooltip>}
         >
-            <Button variant="outline-link" onClick={copyCommand}>
+            <Button variant="outline-link" size="sm" className="m-0 p-0 border-0" onClick={copyCommand}>
                 <FontAwesomeIcon icon={faCopy} />
             </Button>
         </OverlayTrigger>
