@@ -1,6 +1,7 @@
-import { faSkullCrossbones } from "@fortawesome/free-solid-svg-icons";
+import { faSkullCrossbones, faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ButtonGroup, Col, Form, InputGroup, Row, ToggleButton } from "react-bootstrap";
+import { Button, ButtonGroup, Col, Form, InputGroup, Row, ToggleButton } from "react-bootstrap";
+import { DEFAULT_ATHLETE_NAMES, DEFAULT_TIME_PER_ATHLETE } from "../common/constants";
 import { CopyButton } from "./CopyButton";
 
 export function AthletesSettings({ athletes, onChange, currentAthlete, nextAthlete, running }) {
@@ -75,12 +76,40 @@ export function AthletesSettings({ athletes, onChange, currentAthlete, nextAthle
                                     >
                                         <FontAwesomeIcon icon={faSkullCrossbones} />
                                     </ToggleButton>
+                                    {!running && (
+                                        <Button
+                                            variant="danger"
+                                            disabled={athletes.length === 1}
+                                            onClick={() => onChange(athletes.filter((_, ai) => ai !== athleteIndex))}
+                                        >
+                                            <FontAwesomeIcon icon={faTrash} />
+                                        </Button>
+                                    )}
                                 </ButtonGroup>
                             </InputGroup.Append>
                         </InputGroup>
                     </Col>
                 </Form.Group>
             ))}
+
+            {!running && (
+                <Button
+                    variant="light"
+                    block
+                    onClick={() => {
+                        onChange([
+                            ...athletes,
+                            {
+                                text: DEFAULT_ATHLETE_NAMES[athletes.length] ?? "",
+                                time: DEFAULT_TIME_PER_ATHLETE,
+                                enabled: true,
+                            },
+                        ]);
+                    }}
+                >
+                    <FontAwesomeIcon icon={faPlus} /> Add athlete
+                </Button>
+            )}
         </>
     );
 }
