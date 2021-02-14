@@ -202,13 +202,13 @@ export default function App() {
                                 <FontAwesomeIcon icon={faVolumeUp} />
                             </Button>
                         ) : (
-                            <Button size="sm" variant="secondary" onClick={() => setSpeechEnabled(true)}>
+                            <Button size="sm" variant="danger" onClick={() => setSpeechEnabled(true)}>
                                 <FontAwesomeIcon icon={faVolumeMute} />
                             </Button>
                         )}
 
                         {fullscreenActive ? (
-                            <Button className="ml-2" size="sm" variant="secondary" onClick={leaveFullscreen}>
+                            <Button className="ml-2" size="sm" variant="danger" onClick={leaveFullscreen}>
                                 <FontAwesomeIcon icon={faCompress} /> Leave Fullscreen
                             </Button>
                         ) : (
