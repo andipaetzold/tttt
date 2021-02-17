@@ -29,6 +29,8 @@ const initialConfig = loadConfig();
 
 export default function App() {
     const [state, setState] = useState("stopped");
+    const started = state !== "stopped";
+
     const {
         node: fullscreenRef,
         active: fullscreenActive,
@@ -153,7 +155,7 @@ export default function App() {
                     className="pt-4 mb-2 position-relative d-flex flex-column align-items-center justify-content-center"
                     ref={fullscreenRef}
                 >
-                    {state !== "stopped" ? (
+                    {started ? (
                         <div className="w-100">
                             <h1 className="text-center display-2">
                                 {currentAthlete === undefined ? "Wait" : getAthleteName(currentAthlete)}
@@ -223,7 +225,7 @@ export default function App() {
                     </div>
 
                     <div className="mt-5" style={{ maxWidth: "500px" }}>
-                        <AthletesSettings athletes={athletes} onChange={setAthletes} running={state !== "stopped"} />
+                        <AthletesSettings athletes={athletes} onChange={setAthletes} started={started} />
                     </div>
                 </Jumbotron>
 
@@ -241,7 +243,7 @@ export default function App() {
                                 onChange={(e) => setStartDelay(+e.target.value)}
                                 min={0}
                                 step={30}
-                                disabled={state !== "stopped"}
+                                disabled={started}
                             />
                         </Form.Group>
                     </Card.Body>

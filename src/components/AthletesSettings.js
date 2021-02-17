@@ -4,13 +4,13 @@ import { Button, ButtonGroup, Col, Form, InputGroup, Row, ToggleButton } from "r
 import { DEFAULT_ATHLETE_NAMES, DEFAULT_TIME_PER_ATHLETE } from "../common/constants";
 import { CopyButton } from "./CopyButton";
 
-export function AthletesSettings({ athletes, onChange, running }) {
+export function AthletesSettings({ athletes, onChange, running: started }) {
     const discordCommand = `!t config athletes ${athletes
         .map((athlete) => `${athlete.text.trim().replaceAll(" ", "_").replaceAll(" ", "_")}:${athlete.time}`)
         .join(" ")}`;
 
     const getBackgroundColor = (athleteIndex) => {
-        if (!running) {
+        if (!started) {
             return "#fff";
         }
 
@@ -57,7 +57,7 @@ export function AthletesSettings({ athletes, onChange, running }) {
                             />
                             <InputGroup.Append>
                                 <ButtonGroup toggle>
-                                    {running && (
+                                    {started && (
                                         <ToggleButton
                                             variant="outline-secondary"
                                             type="checkbox"
@@ -75,7 +75,7 @@ export function AthletesSettings({ athletes, onChange, running }) {
                                             <FontAwesomeIcon icon={faSkullCrossbones} />
                                         </ToggleButton>
                                     )}
-                                    {!running && (
+                                    {!started && (
                                         <Button
                                             variant="danger"
                                             disabled={athletes.length === 1}
@@ -91,7 +91,7 @@ export function AthletesSettings({ athletes, onChange, running }) {
                 </Form.Group>
             ))}
 
-            {!running && (
+            {!started && (
                 <Button
                     variant="light"
                     block
