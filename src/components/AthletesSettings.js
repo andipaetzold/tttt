@@ -4,30 +4,28 @@ import { Button, ButtonGroup, Col, Form, InputGroup, Row, ToggleButton } from "r
 import { DEFAULT_ATHLETE_NAMES, DEFAULT_TIME_PER_ATHLETE } from "../common/constants";
 import { CopyButton } from "./CopyButton";
 
-export function AthletesSettings({ athletes, onChange, currentAthlete, nextAthlete, running }) {
+export function AthletesSettings({ athletes, onChange, running }) {
     const discordCommand = `!t config athletes ${athletes
         .map((athlete) => `${athlete.text.trim().replaceAll(" ", "_").replaceAll(" ", "_")}:${athlete.time}`)
         .join(" ")}`;
 
     const getBackgroundColor = (athleteIndex) => {
-        if (athleteIndex === currentAthlete) {
-            return "#28a745";
-        }
-
-        if (athleteIndex === nextAthlete) {
-            return "#ffc107";
+        if (!running) {
+            return "#fff";
         }
 
         if (!athletes[athleteIndex].enabled) {
             return "#6c757d80";
         }
+
+        return "#fff";
     };
 
     return (
         <>
-            <h3>
+            <h2 className="mb-3">
                 Athletes <CopyButton command={discordCommand} />
-            </h3>
+            </h2>
 
             {athletes.map((athlete, athleteIndex) => (
                 <Form.Group key={athleteIndex} as={Row} controlId={`athlete-${athleteIndex}`}>
@@ -43,7 +41,6 @@ export function AthletesSettings({ athletes, onChange, currentAthlete, nextAthle
                                         athletes.map((a, ai) => (ai === athleteIndex ? { ...a, text: e.target.value } : a))
                                     )
                                 }
-                                disabled={running}
                             />
                             <Form.Control
                                 style={{ background: getBackgroundColor(athleteIndex) }}
@@ -60,22 +57,24 @@ export function AthletesSettings({ athletes, onChange, currentAthlete, nextAthle
                             />
                             <InputGroup.Append>
                                 <ButtonGroup toggle>
-                                    <ToggleButton
-                                        variant="outline-secondary"
-                                        type="checkbox"
-                                        name={`athlete-${athleteIndex}-enabled`}
-                                        checked={!athlete.enabled}
-                                        disabled={athlete.enabled && athletes.filter((a) => a.enabled).length === 1}
-                                        onChange={(e) =>
-                                            onChange(
-                                                athletes.map((a, ai) =>
-                                                    ai === athleteIndex ? { ...a, enabled: !e.target.checked } : a
+                                    {running && (
+                                        <ToggleButton
+                                            variant="outline-secondary"
+                                            type="checkbox"
+                                            name={`athlete-${athleteIndex}-enabled`}
+                                            checked={!athlete.enabled}
+                                            disabled={athlete.enabled && athletes.filter((a) => a.enabled).length === 1}
+                                            onChange={(e) =>
+                                                onChange(
+                                                    athletes.map((a, ai) =>
+                                                        ai === athleteIndex ? { ...a, enabled: !e.target.checked } : a
+                                                    )
                                                 )
-                                            )
-                                        }
-                                    >
-                                        <FontAwesomeIcon icon={faSkullCrossbones} />
-                                    </ToggleButton>
+                                            }
+                                        >
+                                            <FontAwesomeIcon icon={faSkullCrossbones} />
+                                        </ToggleButton>
+                                    )}
                                     {!running && (
                                         <Button
                                             variant="danger"

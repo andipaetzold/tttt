@@ -124,12 +124,14 @@ export default function App() {
 
         setTimeUntilNextChange(startDelay > 0 ? startDelay : athletes[0].time);
         setCurrentAthlete(startDelay > 0 ? undefined : nextAthlete);
+        setAthletes((athletes) => athletes.map((a) => ({ ...a, enabled: true })));
 
         setState("running");
     };
 
     const handleStop = () => {
         setState("stopped");
+        setAthletes((athletes) => athletes.map((a) => ({ ...a, enabled: true })));
     };
 
     const handlePause = () => {
@@ -147,9 +149,12 @@ export default function App() {
             <Header />
 
             <Container>
-                <Jumbotron className="mb-2 position-relative d-flex flex-column align-items-stretchs justify-content-center" ref={fullscreenRef}>
+                <Jumbotron
+                    className="pt-4 mb-2 position-relative d-flex flex-column align-items-center justify-content-center"
+                    ref={fullscreenRef}
+                >
                     {state !== "stopped" ? (
-                        <div>
+                        <div className="w-100">
                             <h1 className="text-center display-2">
                                 {currentAthlete === undefined ? "Wait" : getAthleteName(currentAthlete)}
                             </h1>
@@ -216,18 +221,14 @@ export default function App() {
                             </Button>
                         )}
                     </div>
+
+                    <div className="mt-5" style={{ maxWidth: "500px" }}>
+                        <AthletesSettings athletes={athletes} onChange={setAthletes} running={state !== "stopped"} />
+                    </div>
                 </Jumbotron>
 
                 <Card className="mb-2">
                     <Card.Body>
-                        <AthletesSettings
-                            athletes={athletes}
-                            onChange={setAthletes}
-                            currentAthlete={state !== "stopped" && currentAthlete}
-                            nextAthlete={state !== "stopped" && nextAthlete}
-                            running={state !== "stopped"}
-                        />
-
                         <h3>Settings</h3>
 
                         <Form.Group controlId="startDelay">
