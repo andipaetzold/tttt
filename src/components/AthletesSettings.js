@@ -4,7 +4,7 @@ import { Button, ButtonGroup, Col, Form, InputGroup, Row, ToggleButton } from "r
 import { DEFAULT_ATHLETE_NAMES, DEFAULT_TIME_PER_ATHLETE } from "../common/constants";
 import { CopyButton } from "./CopyButton";
 
-export function AthletesSettings({ athletes, onChange, running: started }) {
+export function AthletesSettings({ athletes, onChange, started }) {
     const discordCommand = `!t config athletes ${athletes
         .map((athlete) => `${athlete.text.trim().replaceAll(" ", "_").replaceAll(" ", "_")}:${athlete.time}`)
         .join(" ")}`;
