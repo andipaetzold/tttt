@@ -2,15 +2,22 @@ import { faSkullCrossbones, faTrash, faPlus } from "@fortawesome/free-solid-svg-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, ButtonGroup, Col, Form, InputGroup, Row, ToggleButton } from "react-bootstrap";
 import { DEFAULT_ATHLETE_NAMES, DEFAULT_TIME_PER_ATHLETE } from "../common/constants";
+import { Athlete, State } from "../types";
 import { CopyButton } from "./CopyButton";
 
-export function AthletesSettings({ athletes, onChange, started }) {
+interface Props {
+    athletes: Athlete[];
+    onChange: (athletes: Athlete[]) => void;
+    state: State;
+}
+
+export function AthletesSettings({ athletes, onChange, state }: Props) {
     const discordCommand = `!t config athletes ${athletes
         .map((athlete) => `${athlete.text.trim().replaceAll(" ", "_").replaceAll(" ", "_")}:${athlete.time}`)
         .join(" ")}`;
 
-    const getBackgroundColor = (athleteIndex) => {
-        if (!started) {
+    const getBackgroundColor = (athleteIndex: number) => {
+        if (state === "stopped") {
             return "#fff";
         }
 
@@ -57,13 +64,14 @@ export function AthletesSettings({ athletes, onChange, started }) {
                             />
                             <InputGroup.Append>
                                 <ButtonGroup toggle>
-                                    {started && (
+                                    {state !== "stopped" && (
                                         <ToggleButton
                                             variant="outline-secondary"
                                             type="checkbox"
                                             name={`athlete-${athleteIndex}-enabled`}
                                             checked={!athlete.enabled}
                                             disabled={athlete.enabled && athletes.filter((a) => a.enabled).length === 1}
+                                            value={athlete.text}
                                             onChange={(e) =>
                                                 onChange(
                                                     athletes.map((a, ai) =>
@@ -75,7 +83,7 @@ export function AthletesSettings({ athletes, onChange, started }) {
                                             <FontAwesomeIcon icon={faSkullCrossbones} />
                                         </ToggleButton>
                                     )}
-                                    {!started && (
+                                    {state === "stopped" && (
                                         <Button
                                             variant="danger"
                                             disabled={athletes.length === 1}
@@ -91,7 +99,7 @@ export function AthletesSettings({ athletes, onChange, started }) {
                 </Form.Group>
             ))}
 
-            {!started && (
+            {state === "stopped" && (
                 <Button
                     variant="light"
                     block

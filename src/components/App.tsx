@@ -14,22 +14,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useInterval from "@use-it/interval";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Button, Card, Container, Form, Jumbotron, ProgressBar } from "react-bootstrap";
+import { useFullScreenHandle } from "react-full-screen";
 import { loadConfig, saveConfig } from "../common/config";
 import { speakCommand } from "../common/speech";
-import { toSeconds, secondsToString } from "../common/util";
+import { secondsToString, toSeconds } from "../common/util";
 import { useWakeLock } from "../hooks/useWakeLock";
+import { State } from "../types";
 import { AthletesSettings } from "./AthletesSettings";
 import { CopyButton } from "./CopyButton";
 import { DiscordBot } from "./DiscordBot";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
-import { useFullScreenHandle } from "react-full-screen";
 
 const initialConfig = loadConfig();
 
 export default function App() {
-    const [state, setState] = useState("stopped");
-    const started = state !== "stopped";
+    const [state, setState] = useState<State>("stopped");
 
     const {
         node: fullscreenRef,
@@ -44,7 +44,7 @@ export default function App() {
     const [speechEnabled, setSpeechEnabled] = useState(initialConfig.speechEnabled);
     const [athletes, setAthletes] = useState(initialConfig.athletes);
 
-    const getAthleteName = (athleteIndex) => {
+    const getAthleteName = (athleteIndex: number) => {
         if (athleteIndex === undefined) {
             return "";
         }
@@ -53,7 +53,7 @@ export default function App() {
     };
 
     const [timeUntilNextChange, setTimeUntilNextChange] = useState(0);
-    const [currentAthlete, setCurrentAthlete] = useState(undefined);
+    const [currentAthlete, setCurrentAthlete] = useState<number | undefined>(undefined);
 
     useEffect(() => {
         saveConfig({ athletes, startDelay, speechEnabled });
@@ -63,17 +63,17 @@ export default function App() {
         const athletesWithIndex = athletes.map((a, ai) => ({ ...a, index: ai }));
 
         if (currentAthlete === undefined) {
-            return athletesWithIndex.find((a) => a.enabled).index;
+            return athletesWithIndex.find((a) => a.enabled)!.index;
         }
 
         return [...athletesWithIndex.slice(currentAthlete + 1), ...athletesWithIndex].filter((a) => a.enabled)[0].index;
     }, [currentAthlete, athletes]);
 
-    const startTimeRef = useRef();
-    const prevTimeRef = useRef();
-    const pauseTimeRef = useRef();
+    const startTimeRef = useRef<number | undefined>();
+    const prevTimeRef = useRef<number | undefined>();
+    const pauseTimeRef = useRef<number | undefined>();
 
-    const speak = (command) => {
+    const speak = (command: string) => {
         if (!speechEnabled) {
             return;
         }
@@ -103,11 +103,11 @@ export default function App() {
 
         const now = Date.now();
 
-        const secondsSinceStart = toSeconds(now - startTimeRef.current);
-        const prevSecondsSinceStart = toSeconds(prevTimeRef.current - startTimeRef.current);
+        const secondsSinceStart = toSeconds(now - startTimeRef.current!);
+        const prevSecondsSinceStart = toSeconds(prevTimeRef.current! - startTimeRef.current!);
 
         if (secondsSinceStart !== prevSecondsSinceStart) {
-            speak(Math.max(0, changeTime - secondsSinceStart));
+            speak(Math.max(0, changeTime - secondsSinceStart).toString());
             if (secondsSinceStart >= changeTime) {
                 changeToNextAthlete();
             } else {
@@ -143,7 +143,7 @@ export default function App() {
 
     const handleResume = () => {
         setState("running");
-        startTimeRef.current = Date.now() - (pauseTimeRef.current - startTimeRef.current);
+        startTimeRef.current = Date.now() - (pauseTimeRef.current! - startTimeRef.current!);
     };
 
     return (
@@ -155,7 +155,7 @@ export default function App() {
                     className="pt-4 mb-2 position-relative d-flex flex-column align-items-center justify-content-center"
                     ref={fullscreenRef}
                 >
-                    {started ? (
+                    {state !== "stopped" ? (
                         <div className="w-100">
                             <h1 className="text-center display-2">
                                 {currentAthlete === undefined ? "Wait" : getAthleteName(currentAthlete)}
@@ -225,7 +225,7 @@ export default function App() {
                     </div>
 
                     <div className="mt-5" style={{ maxWidth: "500px" }}>
-                        <AthletesSettings athletes={athletes} onChange={setAthletes} started={started} />
+                        <AthletesSettings athletes={athletes} onChange={setAthletes} state={state} />
                     </div>
                 </Jumbotron>
 
@@ -243,7 +243,7 @@ export default function App() {
                                 onChange={(e) => setStartDelay(+e.target.value)}
                                 min={0}
                                 step={30}
-                                disabled={started}
+                                disabled={state !== "stopped"}
                             />
                         </Form.Group>
                     </Card.Body>

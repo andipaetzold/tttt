@@ -2,8 +2,8 @@ import { useEffect, useRef } from "react";
 
 const isSupported = "wakeLock" in navigator;
 
-export function useWakeLock(active) {
-    const wakelockRef = useRef(null);
+export function useWakeLock(active: boolean) {
+    const wakelockRef = useRef<WakeLock | null>(null);
 
     useEffect(() => {
         if (!isSupported) {

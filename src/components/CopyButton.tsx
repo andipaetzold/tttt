@@ -3,9 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef, useState } from "react";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 
-export function CopyButton({ command }) {
+interface Props {
+    command: string;
+}
+
+export function CopyButton({ command }: Props) {
     const [copied, setCopied] = useState(false);
-    const copiedTimeout = useRef(undefined);
+    const copiedTimeout = useRef<number | undefined>(undefined);
 
     const copyCommand = () => {
         navigator.clipboard.writeText(command);
@@ -15,7 +19,7 @@ export function CopyButton({ command }) {
             copiedTimeout.current = undefined;
         }
         setCopied(true);
-        copiedTimeout.current = setTimeout(() => setCopied(false), 5_000);
+        copiedTimeout.current = (setTimeout(() => setCopied(false), 5_000) as unknown) as number;
     };
 
     return (
