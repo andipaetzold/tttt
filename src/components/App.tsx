@@ -189,7 +189,8 @@ export default function App() {
                                 )}
 
                                 <Button variant="warning" onClick={changeToNextAthlete}>
-                                    <FontAwesomeIcon icon={faForward} /> Skip
+                                    <FontAwesomeIcon icon={faForward} />{" "}
+                                    {currentAthlete === undefined ? "Start now" : "Skip"}
                                 </Button>
                             </div>
                         </div>
