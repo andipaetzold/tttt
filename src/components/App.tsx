@@ -6,6 +6,7 @@ import {
     faForward,
     faPause,
     faPlay,
+    faPlus,
     faStop,
     faVolumeMute,
     faVolumeUp,
@@ -146,6 +147,10 @@ export default function App() {
         startTimeRef.current = Date.now() - (pauseTimeRef.current! - startTimeRef.current!);
     };
 
+    const handlePlus10 = () => {
+        startTimeRef.current = startTimeRef.current! - 10;
+    };
+
     return (
         <>
             <Header />
@@ -185,10 +190,16 @@ export default function App() {
                                     </Button>
                                 )}
 
-                                <Button variant="warning" onClick={changeToNextAthlete}>
+                                <Button variant="warning" className="mr-1" onClick={changeToNextAthlete}>
                                     <FontAwesomeIcon icon={faForward} />{" "}
                                     {currentAthlete === undefined ? "Start now" : "Skip"}
                                 </Button>
+
+                                {state === "running" && (
+                                    <Button variant="success" onClick={handlePlus10}>
+                                        <FontAwesomeIcon icon={faPlus} /> 10s
+                                    </Button>
+                                )}
                             </div>
                         </div>
                     ) : (
