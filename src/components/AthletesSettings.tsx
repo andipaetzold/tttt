@@ -62,38 +62,38 @@ export function AthletesSettings({ athletes, onChange, state }: Props) {
                                     )
                                 }
                             />
-                            <InputGroup.Append>
-                                <ButtonGroup toggle>
-                                    {state !== "stopped" && (
-                                        <ToggleButton
-                                            variant="outline-secondary"
-                                            type="checkbox"
-                                            name={`athlete-${athleteIndex}-enabled`}
-                                            checked={!athlete.enabled}
-                                            disabled={athlete.enabled && athletes.filter((a) => a.enabled).length === 1}
-                                            value={athlete.text}
-                                            onChange={(e) =>
-                                                onChange(
-                                                    athletes.map((a, ai) =>
-                                                        ai === athleteIndex ? { ...a, enabled: !e.target.checked } : a
-                                                    )
+                            {state !== "stopped" && (
+                                <ButtonGroup toggle as={InputGroup.Append}>
+                                    <ToggleButton
+                                        variant="outline-secondary"
+                                        type="checkbox"
+                                        name={`athlete-${athleteIndex}-enabled`}
+                                        checked={!athlete.enabled}
+                                        disabled={athlete.enabled && athletes.filter((a) => a.enabled).length === 1}
+                                        value={athlete.text}
+                                        onChange={(e) =>
+                                            onChange(
+                                                athletes.map((a, ai) =>
+                                                    ai === athleteIndex ? { ...a, enabled: !e.target.checked } : a
                                                 )
-                                            }
-                                        >
-                                            <FontAwesomeIcon icon={faSkullCrossbones} />
-                                        </ToggleButton>
-                                    )}
-                                    {state === "stopped" && (
-                                        <Button
-                                            variant="danger"
-                                            disabled={athletes.length === 1}
-                                            onClick={() => onChange(athletes.filter((_, ai) => ai !== athleteIndex))}
-                                        >
-                                            <FontAwesomeIcon icon={faTrash} />
-                                        </Button>
-                                    )}
+                                            )
+                                        }
+                                    >
+                                        <FontAwesomeIcon icon={faSkullCrossbones} />
+                                    </ToggleButton>
                                 </ButtonGroup>
-                            </InputGroup.Append>
+                            )}
+                            {state === "stopped" && (
+                                <InputGroup.Append>
+                                    <Button
+                                        variant="danger"
+                                        disabled={athletes.length === 1}
+                                        onClick={() => onChange(athletes.filter((_, ai) => ai !== athleteIndex))}
+                                    >
+                                        <FontAwesomeIcon icon={faTrash} />
+                                    </Button>
+                                </InputGroup.Append>
+                            )}
                         </InputGroup>
                     </Col>
                 </Form.Group>
