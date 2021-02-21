@@ -1,4 +1,3 @@
-import { faClock } from "@fortawesome/free-regular-svg-icons";
 import {
     faArrowRight,
     faCompress,
@@ -14,15 +13,16 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useInterval from "@use-it/interval";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Button, Card, Container, Form, Jumbotron, ProgressBar } from "react-bootstrap";
+import { Button, Card, Container, Form, Jumbotron } from "react-bootstrap";
 import { useFullScreenHandle } from "react-full-screen";
 import { loadConfig, saveConfig } from "../common/config";
 import { speakCommand } from "../common/speech";
-import { secondsToString, toSeconds } from "../common/util";
+import { secondsToString } from "../common/util";
 import { useWakeLock } from "../hooks/useWakeLock";
-import { State } from "../types";
+import { Round, State } from "../types";
 import { AthletesSettings } from "./AthletesSettings";
 import { CopyButton } from "./CopyButton";
+import { Countdown } from "./Countdown";
 import { DiscordBot } from "./DiscordBot";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
@@ -45,6 +45,8 @@ export default function App() {
     const [speechEnabled, setSpeechEnabled] = useState(initialConfig.speechEnabled);
     const [athletes, setAthletes] = useState(initialConfig.athletes);
 
+    const [round, setRound] = useState<Round | undefined>(undefined);
+
     const getAthleteName = (athleteIndex: number) => {
         if (athleteIndex === undefined) {
             return "";
@@ -53,9 +55,6 @@ export default function App() {
         return athletes[athleteIndex].text || `Athlete ${athleteIndex + 1}`;
     };
 
-    const [timeUntilNextChange, setTimeUntilNextChange] = useState(0);
-    const [currentAthlete, setCurrentAthlete] = useState<number | undefined>(undefined);
-
     useEffect(() => {
         saveConfig({ athletes, startDelay, speechEnabled });
     }, [athletes, startDelay, speechEnabled]);
@@ -63,70 +62,74 @@ export default function App() {
     const nextAthlete = useMemo(() => {
         const athletesWithIndex = athletes.map((a, ai) => ({ ...a, index: ai }));
 
-        if (currentAthlete === undefined) {
+        if (round?.currentAthlete === undefined) {
             return athletesWithIndex.find((a) => a.enabled)!.index;
         }
 
-        return [...athletesWithIndex.slice(currentAthlete + 1), ...athletesWithIndex].filter((a) => a.enabled)[0].index;
-    }, [currentAthlete, athletes]);
-
-    const startTimeRef = useRef<number | undefined>();
-    const prevTimeRef = useRef<number | undefined>();
-    const pauseTimeRef = useRef<number | undefined>();
+        return [...athletesWithIndex.slice(round.currentAthlete + 1), ...athletesWithIndex].filter((a) => a.enabled)[0]
+            .index;
+    }, [round, athletes]);
 
     const speak = (command: string) => {
         if (!speechEnabled) {
             return;
         }
+
         speakCommand(command, {
             nextAthlete: getAthleteName(nextAthlete),
-            started: currentAthlete !== undefined,
+            started: round?.currentAthlete !== undefined,
         });
     };
 
-    const changeToNextAthlete = () => {
-        setCurrentAthlete(nextAthlete);
-        setTimeUntilNextChange(athletes[nextAthlete].time);
-
-        const now = Date.now();
-        startTimeRef.current = now;
-        if (state === "paused") {
-            pauseTimeRef.current = now;
-        }
-    };
-
+    const prevTimeRef = useRef<number | undefined>();
     useInterval(() => {
-        if (state !== "running") {
+        const now = Date.now();
+        const timeDiff = (now - prevTimeRef.current!) / 1_000;
+        prevTimeRef.current = now;
+
+        if (state !== "running" || round === undefined) {
             return;
         }
 
-        const changeTime = currentAthlete === undefined ? startDelay : athletes[currentAthlete].time;
+        let updatedRound: Round = {
+            ...round,
+            timePassed: round.timePassed + timeDiff,
+        };
 
-        const now = Date.now();
-
-        const secondsSinceStart = toSeconds(now - startTimeRef.current!);
-        const prevSecondsSinceStart = toSeconds(prevTimeRef.current! - startTimeRef.current!);
-
-        if (secondsSinceStart !== prevSecondsSinceStart) {
-            speak(Math.max(0, changeTime - secondsSinceStart).toString());
-            if (secondsSinceStart >= changeTime) {
-                changeToNextAthlete();
-            } else {
-                setTimeUntilNextChange(Math.max(changeTime - secondsSinceStart, 0));
+        if (Math.floor(round.timePassed) !== Math.floor(updatedRound.timePassed)) {
+            const remainingTimeInSeconds = Math.floor(Math.max(0, updatedRound.totalTime - updatedRound.timePassed));
+            speak(remainingTimeInSeconds.toString());
+            if (remainingTimeInSeconds === 0) {
+                updatedRound = {
+                    timePassed: 0,
+                    currentAthlete: nextAthlete,
+                    totalTime: athletes[nextAthlete].time,
+                };
             }
         }
 
-        prevTimeRef.current = now;
+        setRound(updatedRound);
     }, 500);
+
+    const handleSkip = () => {
+        speak("skip");
+        setRound({
+            timePassed: 0,
+            currentAthlete: nextAthlete,
+            totalTime: athletes[nextAthlete].time,
+        });
+    };
 
     const handleStart = () => {
         const now = Date.now();
-
         prevTimeRef.current = now;
-        startTimeRef.current = now;
 
-        setTimeUntilNextChange(startDelay > 0 ? startDelay : athletes[0].time);
-        setCurrentAthlete(startDelay > 0 ? undefined : nextAthlete);
+        setRound({
+            timePassed: 0,
+            totalTime: startDelay > 0 ? startDelay : athletes[0].time,
+            currentAthlete: startDelay > 0 ? undefined : nextAthlete,
+        });
+
         setAthletes((athletes) => athletes.map((a) => ({ ...a, enabled: true })));
 
         setState("running");
@@ -139,16 +142,21 @@ export default function App() {
 
     const handlePause = () => {
         setState("paused");
-        pauseTimeRef.current = Date.now();
     };
 
     const handleResume = () => {
         setState("running");
-        startTimeRef.current = Date.now() - (pauseTimeRef.current! - startTimeRef.current!);
     };
 
     const handlePlus10 = () => {
-        startTimeRef.current = startTimeRef.current! - 10;
+        if (!round) {
+            return;
+        }
+
+        setRound({
+            ...round,
+            totalTime: round.totalTime + 10,
+        });
     };
 
     return (
@@ -160,24 +168,17 @@ export default function App() {
                     className="pt-4 mb-2 position-relative d-flex flex-column align-items-center justify-content-center"
                     ref={fullscreenRef}
                 >
-                    {state !== "stopped" ? (
+                    {state !== "stopped" && round !== undefined ? (
                         <div className="w-100">
                             <h1 className="text-center display-2">
-                                {currentAthlete === undefined ? "Wait" : getAthleteName(currentAthlete)}
+                                {round.currentAthlete === undefined ? "Wait" : getAthleteName(round.currentAthlete)}
                             </h1>
 
                             <h2 className="text-center display-5">
                                 <FontAwesomeIcon icon={faArrowRight} /> {getAthleteName(nextAthlete)}
                             </h2>
 
-                            <h3 className="text-center display-6">
-                                <FontAwesomeIcon icon={faClock} /> {secondsToString(timeUntilNextChange)}
-                            </h3>
-                            <ProgressBar
-                                style={{ transform: "scaleX(-1)", background: "white" }}
-                                now={timeUntilNextChange}
-                                max={currentAthlete === undefined ? startDelay : athletes[currentAthlete].time}
-                            />
+                            <Countdown timePassed={round.timePassed} totalTime={round.totalTime} />
 
                             <div className="mt-4 text-center">
                                 {state === "paused" ? (
@@ -190,9 +191,9 @@ export default function App() {
                                     </Button>
                                 )}
 
-                                <Button variant="warning" className="mr-1" onClick={changeToNextAthlete}>
+                                <Button variant="warning" className="mr-1" onClick={handleSkip}>
                                     <FontAwesomeIcon icon={faForward} />{" "}
-                                    {currentAthlete === undefined ? "Start now" : "Skip"}
+                                    {round.currentAthlete === undefined ? "Start now" : "Skip"}
                                 </Button>
 
                                 {state === "running" && (

@@ -16,6 +16,7 @@ const voiceCommands: Record<string, (args: Args) => string> = {
     2: () => "Two",
     1: () => "One",
     0: ({ nextAthlete, started }) => (started ? `Change to ${nextAthlete}` : "Let's go"),
+    skip: ({ nextAthlete }) => `Go ${nextAthlete}!`,
 };
 
 export function speakCommand(command: string, args: Args) {

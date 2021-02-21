@@ -5,3 +5,9 @@ export interface Athlete {
 }
 
 export type State = "stopped" | "running" | "paused";
+
+export interface Round {
+    timePassed: number;
+    totalTime: number;
+    currentAthlete: number | undefined; // undefined = startDelay
+}
