@@ -175,9 +175,6 @@ export default function App() {
                             />
 
                             <div className="mt-4 text-center">
-                                <Button variant="danger" className="mr-1" onClick={handleStop}>
-                                    <FontAwesomeIcon icon={faStop} /> Stop
-                                </Button>
                                 {state === "paused" ? (
                                     <Button variant="info" className="mr-1" onClick={handleResume}>
                                         <FontAwesomeIcon icon={faPlay} /> Resume
@@ -204,12 +201,18 @@ export default function App() {
                     )}
 
                     <div className="position-absolute" style={{ right: 16, bottom: 16 }}>
+                        {state !== "stopped" && (
+                            <Button variant="danger" size="sm" onClick={handleStop}>
+                                <FontAwesomeIcon icon={faStop} /> Stop Timer
+                            </Button>
+                        )}
+
                         {speechEnabled ? (
-                            <Button size="sm" variant="secondary" onClick={() => setSpeechEnabled(false)}>
+                            <Button className="ml-2" size="sm" variant="secondary" onClick={() => setSpeechEnabled(false)}>
                                 <FontAwesomeIcon icon={faVolumeUp} />
                             </Button>
                         ) : (
-                            <Button size="sm" variant="danger" onClick={() => setSpeechEnabled(true)}>
+                            <Button className="ml-2" size="sm" variant="danger" onClick={() => setSpeechEnabled(true)}>
                                 <FontAwesomeIcon icon={faVolumeMute} />
                             </Button>
                         )}
