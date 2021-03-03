@@ -97,11 +97,14 @@ export default function App() {
         };
 
         if (Math.floor(round.timePassed) !== Math.floor(updatedRound.timePassed)) {
-            const remainingTimeInSeconds = Math.floor(Math.max(0, updatedRound.totalTime - updatedRound.timePassed));
+            const remainingTime = updatedRound.totalTime - updatedRound.timePassed;
+            const remainingTimeInSeconds = Math.floor(Math.max(0, remainingTime));
+
             speak(remainingTimeInSeconds.toString());
+
             if (remainingTimeInSeconds === 0) {
                 updatedRound = {
-                    timePassed: 0,
+                    timePassed: -remainingTime,
                     currentAthlete: nextAthlete,
                     totalTime: athletes[nextAthlete].time,
                 };
