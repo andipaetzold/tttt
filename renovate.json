@@ -1,7 +1,7 @@
 {
-  "extends": ["config:js-app"],
-  "dependencyDashboard": true,
-  "lockFileMaintenance": {
-    "enabled": true
-  }
+    "extends": ["config:js-app", ":semanticCommitsDisabled"],
+    "dependencyDashboard": true,
+    "lockFileMaintenance": {
+        "enabled": true
+    }
 }
