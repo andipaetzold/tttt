@@ -1,16 +1,11 @@
-import { Alert, Badge, Col, Row } from "react-bootstrap";
+import { Alert, Col, Row } from "react-bootstrap";
 import discordLogo from "../assets/discord.svg";
 import discordMarkLogo from "../assets/discordMark.svg";
 
 export function DiscordBot() {
     return (
         <Alert variant="info">
-            <Alert.Heading>
-                Discord Bot{" "}
-                <Badge pill variant="primary">
-                    Beta
-                </Badge>
-            </Alert.Heading>
+            <Alert.Heading>Discord Bot</Alert.Heading>
             <Row>
                 <Col xs={12} sm={4} md={2}>
                     <img src={discordLogo} alt="Discord Logo" className="d-block d-sm-none" />
