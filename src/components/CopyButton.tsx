@@ -1,10 +1,10 @@
 import { faCopy } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { captureException } from "@sentry/react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 
-type State = "DEFAULT" | "SUCCESS" | "ERROR";
+type State = "DEFAULT" | "SUCCESS" | "ERROR" | "NOT_SUPPORTED";
 
 interface Props {
     command: string;
@@ -14,31 +14,26 @@ export function CopyButton({ command }: Props) {
     const [tooltipState, setTooltipState] = useState<State>("DEFAULT");
     const copiedTimeout = useRef<number | undefined>(undefined);
 
-    const [showButton, setShowButton] = useState(false);
-
-    const copyCommand = () => {
+    const copyCommand = async () => {
         try {
-            navigator.clipboard.writeText(command);
+            if (await isSupported()) {
+                navigator.clipboard.writeText(command);
 
-            if (copiedTimeout.current) {
-                clearTimeout(copiedTimeout.current);
-                copiedTimeout.current = undefined;
+                if (copiedTimeout.current) {
+                    clearTimeout(copiedTimeout.current);
+                    copiedTimeout.current = undefined;
+                }
+                setTooltipState("SUCCESS");
+            } else {
+                setTooltipState("NOT_SUPPORTED");
             }
-            setTooltipState("SUCCESS");
-            copiedTimeout.current = (setTimeout(() => setTooltipState("DEFAULT"), 5_000) as unknown) as number;
         } catch (e) {
             captureException(e);
             setTooltipState("ERROR");
+        } finally {
+            copiedTimeout.current = (setTimeout(() => setTooltipState("DEFAULT"), 5_000) as unknown) as number;
         }
     };
-
-    useEffect(() => {
-        isSupported.then((r) => setShowButton(r));
-    }, []);
-
-    if (!showButton) {
-        return null;
-    }
 
     return (
         <OverlayTrigger
@@ -58,13 +53,15 @@ function getTooltipText(state: State) {
             return "Copied!";
         case "ERROR":
             return "Could not copy command.";
+        case "NOT_SUPPORTED":
+            return "Your browser doesn't allow copying the Dsiscord command.";
         default:
         case "DEFAULT":
             return "Copy Discord Bot command";
     }
 }
 
-async function isSupportedFn(): Promise<boolean> {
+async function isSupported(): Promise<boolean> {
     if (!("permissions" in navigator)) {
         return false;
     }
@@ -72,4 +69,3 @@ async function isSupportedFn(): Promise<boolean> {
     const result = await navigator.permissions.query({ name: "clipboard-write" });
     return result.state === "granted";
 }
-const isSupported = isSupportedFn();
