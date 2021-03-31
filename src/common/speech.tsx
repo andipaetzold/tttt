@@ -26,10 +26,16 @@ export function speakCommand(command: string, args: Args) {
 }
 
 export function speak(text: string) {
-    const msg = new SpeechSynthesisUtterance();
+    if (!isSpeechSupported) {
+        return;
+    }
+
+    const msg = new window.SpeechSynthesisUtterance();
     msg.text = text;
     msg.lang = "en-US";
 
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(msg);
 }
+
+export const isSpeechSupported = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;

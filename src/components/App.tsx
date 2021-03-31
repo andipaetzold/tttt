@@ -12,11 +12,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useInterval from "@use-it/interval";
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Button, Card, Container, Form, Jumbotron } from "react-bootstrap";
 import { useFullScreenHandle } from "react-full-screen";
 import { loadConfig, saveConfig } from "../common/config";
-import { speakCommand } from "../common/speech";
+import { isSpeechSupported, speakCommand } from "../common/speech";
 import { secondsToString } from "../common/util";
 import { useWakeLock } from "../hooks/useWakeLock";
 import { Round, State } from "../types";
@@ -222,14 +222,28 @@ export default function App() {
                             </Button>
                         )}
 
-                        {speechEnabled ? (
-                            <Button className="ml-2" size="sm" variant="secondary" onClick={() => setSpeechEnabled(false)}>
-                                <FontAwesomeIcon icon={faVolumeUp} />
-                            </Button>
-                        ) : (
-                            <Button className="ml-2" size="sm" variant="danger" onClick={() => setSpeechEnabled(true)}>
-                                <FontAwesomeIcon icon={faVolumeMute} />
-                            </Button>
+                        {isSpeechSupported && (
+                            <>
+                                {speechEnabled ? (
+                                    <Button
+                                        className="ml-2"
+                                        size="sm"
+                                        variant="secondary"
+                                        onClick={() => setSpeechEnabled(false)}
+                                    >
+                                        <FontAwesomeIcon icon={faVolumeUp} />
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        className="ml-2"
+                                        size="sm"
+                                        variant="danger"
+                                        onClick={() => setSpeechEnabled(true)}
+                                    >
+                                        <FontAwesomeIcon icon={faVolumeMute} />
+                                    </Button>
+                                )}
+                            </>
                         )}
 
                         {fullscreenActive ? (
