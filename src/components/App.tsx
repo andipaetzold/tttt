@@ -246,14 +246,18 @@ export default function App() {
                             </>
                         )}
 
-                        {fullscreenActive ? (
-                            <Button className="ml-2" size="sm" variant="danger" onClick={leaveFullscreen}>
-                                <FontAwesomeIcon icon={faCompress} />
-                            </Button>
-                        ) : (
-                            <Button className="ml-2" size="sm" variant="secondary" onClick={enterFullscreen}>
-                                <FontAwesomeIcon icon={faExpand} />
-                            </Button>
+                        {document.fullscreenEnabled && (
+                            <>
+                                {fullscreenActive ? (
+                                    <Button className="ml-2" size="sm" variant="danger" onClick={leaveFullscreen}>
+                                        <FontAwesomeIcon icon={faCompress} />
+                                    </Button>
+                                ) : (
+                                    <Button className="ml-2" size="sm" variant="secondary" onClick={enterFullscreen}>
+                                        <FontAwesomeIcon icon={faExpand} />
+                                    </Button>
+                                )}
+                            </>
                         )}
                     </div>
 
