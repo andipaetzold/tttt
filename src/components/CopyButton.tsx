@@ -31,7 +31,7 @@ export function CopyButton({ command }: Props) {
             captureException(e);
             setTooltipState("ERROR");
         } finally {
-            copiedTimeout.current = (setTimeout(() => setTooltipState("DEFAULT"), 5_000) as unknown) as number;
+            copiedTimeout.current = setTimeout(() => setTooltipState("DEFAULT"), 5_000) as unknown as number;
         }
     };
 
@@ -66,6 +66,6 @@ async function isSupported(): Promise<boolean> {
         return false;
     }
 
-    const result = await navigator.permissions.query({ name: "clipboard-write" });
+    const result = await navigator.permissions.query({ name: "clipboard-write" as PermissionName });
     return result.state === "granted";
 }
