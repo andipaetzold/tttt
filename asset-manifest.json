@@ -5,18 +5,18 @@
     "runtime-main.js": "./static/js/runtime-main.80f5a75c.js",
     "runtime-main.js.map": "./static/js/runtime-main.80f5a75c.js.map",
     "static/css/2.27dd871e.chunk.css": "./static/css/2.27dd871e.chunk.css",
-    "static/js/2.1292b068.chunk.js": "./static/js/2.1292b068.chunk.js",
-    "static/js/2.1292b068.chunk.js.map": "./static/js/2.1292b068.chunk.js.map",
+    "static/js/2.79dc9ae7.chunk.js": "./static/js/2.79dc9ae7.chunk.js",
+    "static/js/2.79dc9ae7.chunk.js.map": "./static/js/2.79dc9ae7.chunk.js.map",
     "index.html": "./index.html",
     "static/css/2.27dd871e.chunk.css.map": "./static/css/2.27dd871e.chunk.css.map",
-    "static/js/2.1292b068.chunk.js.LICENSE.txt": "./static/js/2.1292b068.chunk.js.LICENSE.txt",
+    "static/js/2.79dc9ae7.chunk.js.LICENSE.txt": "./static/js/2.79dc9ae7.chunk.js.LICENSE.txt",
     "static/media/discord.3372aeeb.svg": "./static/media/discord.3372aeeb.svg",
     "static/media/discordMark.d2c3bfa7.svg": "./static/media/discordMark.d2c3bfa7.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.80f5a75c.js",
     "static/css/2.27dd871e.chunk.css",
-    "static/js/2.1292b068.chunk.js",
+    "static/js/2.79dc9ae7.chunk.js",
     "static/js/main.3ae5a694.chunk.js"
   ]
 }
