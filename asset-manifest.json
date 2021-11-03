@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.js": "./static/js/main.13593e46.chunk.js",
-    "main.js.map": "./static/js/main.13593e46.chunk.js.map",
+    "main.js": "./static/js/main.ac5bd89b.chunk.js",
+    "main.js.map": "./static/js/main.ac5bd89b.chunk.js.map",
     "runtime-main.js": "./static/js/runtime-main.9256661f.js",
     "runtime-main.js.map": "./static/js/runtime-main.9256661f.js.map",
     "static/css/2.d6008dad.chunk.css": "./static/css/2.d6008dad.chunk.css",
-    "static/js/2.3cafe0da.chunk.js": "./static/js/2.3cafe0da.chunk.js",
-    "static/js/2.3cafe0da.chunk.js.map": "./static/js/2.3cafe0da.chunk.js.map",
+    "static/js/2.f68a0169.chunk.js": "./static/js/2.f68a0169.chunk.js",
+    "static/js/2.f68a0169.chunk.js.map": "./static/js/2.f68a0169.chunk.js.map",
     "index.html": "./index.html",
     "static/css/2.d6008dad.chunk.css.map": "./static/css/2.d6008dad.chunk.css.map",
-    "static/js/2.3cafe0da.chunk.js.LICENSE.txt": "./static/js/2.3cafe0da.chunk.js.LICENSE.txt",
+    "static/js/2.f68a0169.chunk.js.LICENSE.txt": "./static/js/2.f68a0169.chunk.js.LICENSE.txt",
     "static/media/discord.3372aeeb.svg": "./static/media/discord.3372aeeb.svg",
     "static/media/discordMark.d2c3bfa7.svg": "./static/media/discordMark.d2c3bfa7.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.9256661f.js",
     "static/css/2.d6008dad.chunk.css",
-    "static/js/2.3cafe0da.chunk.js",
-    "static/js/main.13593e46.chunk.js"
+    "static/js/2.f68a0169.chunk.js",
+    "static/js/main.ac5bd89b.chunk.js"
   ]
 }
