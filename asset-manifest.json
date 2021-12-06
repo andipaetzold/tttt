@@ -4,18 +4,18 @@
     "main.js.map": "./static/js/main.df5b98fa.chunk.js.map",
     "runtime-main.js": "./static/js/runtime-main.04c57066.js",
     "runtime-main.js.map": "./static/js/runtime-main.04c57066.js.map",
-    "static/css/2.bd932d36.chunk.css": "./static/css/2.bd932d36.chunk.css",
+    "static/css/2.d6008dad.chunk.css": "./static/css/2.d6008dad.chunk.css",
     "static/js/2.046ed07e.chunk.js": "./static/js/2.046ed07e.chunk.js",
     "static/js/2.046ed07e.chunk.js.map": "./static/js/2.046ed07e.chunk.js.map",
     "index.html": "./index.html",
-    "static/css/2.bd932d36.chunk.css.map": "./static/css/2.bd932d36.chunk.css.map",
+    "static/css/2.d6008dad.chunk.css.map": "./static/css/2.d6008dad.chunk.css.map",
     "static/js/2.046ed07e.chunk.js.LICENSE.txt": "./static/js/2.046ed07e.chunk.js.LICENSE.txt",
     "static/media/discord.3372aeeb.svg": "./static/media/discord.3372aeeb.svg",
     "static/media/discordMark.d2c3bfa7.svg": "./static/media/discordMark.d2c3bfa7.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.04c57066.js",
-    "static/css/2.bd932d36.chunk.css",
+    "static/css/2.d6008dad.chunk.css",
     "static/js/2.046ed07e.chunk.js",
     "static/js/main.df5b98fa.chunk.js"
   ]
