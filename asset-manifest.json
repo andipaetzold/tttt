@@ -1,22 +1,15 @@
 {
   "files": {
-    "main.js": "./static/js/main.c84ad7f6.chunk.js",
-    "main.js.map": "./static/js/main.c84ad7f6.chunk.js.map",
-    "runtime-main.js": "./static/js/runtime-main.04c57066.js",
-    "runtime-main.js.map": "./static/js/runtime-main.04c57066.js.map",
-    "static/css/2.d6008dad.chunk.css": "./static/css/2.d6008dad.chunk.css",
-    "static/js/2.a47a27d0.chunk.js": "./static/js/2.a47a27d0.chunk.js",
-    "static/js/2.a47a27d0.chunk.js.map": "./static/js/2.a47a27d0.chunk.js.map",
+    "main.css": "./static/css/main.6f7f25f4.css",
+    "main.js": "./static/js/main.cedca5fc.js",
+    "static/media/discord.svg": "./static/media/discord.3372aeeb4f733add4388961f04cff308.svg",
+    "static/media/discordMark.svg": "./static/media/discordMark.d2c3bfa75ff259af5d7fc2e4fa123569.svg",
     "index.html": "./index.html",
-    "static/css/2.d6008dad.chunk.css.map": "./static/css/2.d6008dad.chunk.css.map",
-    "static/js/2.a47a27d0.chunk.js.LICENSE.txt": "./static/js/2.a47a27d0.chunk.js.LICENSE.txt",
-    "static/media/discord.3372aeeb.svg": "./static/media/discord.3372aeeb.svg",
-    "static/media/discordMark.d2c3bfa7.svg": "./static/media/discordMark.d2c3bfa7.svg"
+    "main.6f7f25f4.css.map": "./static/css/main.6f7f25f4.css.map",
+    "main.cedca5fc.js.map": "./static/js/main.cedca5fc.js.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.04c57066.js",
-    "static/css/2.d6008dad.chunk.css",
-    "static/js/2.a47a27d0.chunk.js",
-    "static/js/main.c84ad7f6.chunk.js"
+    "static/css/main.6f7f25f4.css",
+    "static/js/main.cedca5fc.js"
   ]
 }
