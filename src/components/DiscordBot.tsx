@@ -14,7 +14,7 @@ export function DiscordBot() {
                 <Col xs={12} sm={8} md={10}>
                     <p className="mt-2">
                         No need to run the Web App on a rider's computer and mess around with the audio setup. Just add the
-                        TTT-Timer Discord Bot to your server and type <code>!t help</code> for details on how to use it.
+                        TTT-Timer Discord Bot to your server and type <code>/timer help</code> for details on how to use it.
                         After starting the timer, it will appear as a user within your call and coach you through the race.
                     </p>
 
