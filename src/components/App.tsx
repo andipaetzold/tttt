@@ -13,7 +13,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useInterval from "@use-it/interval";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Button, Card, Container, Form, Jumbotron } from "react-bootstrap";
+import { Button, Card, Container, Form } from "react-bootstrap";
 import { useFullScreenHandle } from "react-full-screen";
 import { loadConfig, saveConfig } from "../common/config";
 import { isSpeechSupported, speakCommand } from "../common/speech";
@@ -167,8 +167,8 @@ export default function App() {
             <Header />
 
             <Container>
-                <Jumbotron
-                    className="pt-4 mb-2 position-relative d-flex flex-column align-items-center justify-content-center"
+                <div
+                    className="jumbotron pt-4 mb-2 position-relative d-flex flex-column align-items-center justify-content-center"
                     ref={fullscreenRef}
                 >
                     {state !== "stopped" && round !== undefined ? (
@@ -185,16 +185,16 @@ export default function App() {
 
                             <div className="mt-4 text-center">
                                 {state === "paused" ? (
-                                    <Button variant="info" className="mr-1" onClick={handleResume}>
+                                    <Button variant="info" className="me-1" onClick={handleResume}>
                                         <FontAwesomeIcon icon={faPlay} /> Resume
                                     </Button>
                                 ) : (
-                                    <Button variant="info" className="mr-1" onClick={handlePause}>
+                                    <Button variant="info" className="me-1" onClick={handlePause}>
                                         <FontAwesomeIcon icon={faPause} /> Pause
                                     </Button>
                                 )}
 
-                                <Button variant="warning" className="mr-1" onClick={handleSkip}>
+                                <Button variant="warning" className="me-1" onClick={handleSkip}>
                                     <FontAwesomeIcon icon={faForward} />{" "}
                                     {round.currentAthlete === undefined ? "Start now" : "Skip"}
                                 </Button>
@@ -226,7 +226,7 @@ export default function App() {
                             <>
                                 {speechEnabled ? (
                                     <Button
-                                        className="ml-2"
+                                        className="ms-2"
                                         size="sm"
                                         variant="secondary"
                                         onClick={() => setSpeechEnabled(false)}
@@ -235,7 +235,7 @@ export default function App() {
                                     </Button>
                                 ) : (
                                     <Button
-                                        className="ml-2"
+                                        className="ms-2"
                                         size="sm"
                                         variant="danger"
                                         onClick={() => setSpeechEnabled(true)}
@@ -249,11 +249,11 @@ export default function App() {
                         {document.fullscreenEnabled && (
                             <>
                                 {fullscreenActive ? (
-                                    <Button className="ml-2" size="sm" variant="danger" onClick={leaveFullscreen}>
+                                    <Button className="ms-2" size="sm" variant="danger" onClick={leaveFullscreen}>
                                         <FontAwesomeIcon icon={faCompress} />
                                     </Button>
                                 ) : (
-                                    <Button className="ml-2" size="sm" variant="secondary" onClick={enterFullscreen}>
+                                    <Button className="ms-2" size="sm" variant="secondary" onClick={enterFullscreen}>
                                         <FontAwesomeIcon icon={faExpand} />
                                     </Button>
                                 )}
@@ -264,7 +264,7 @@ export default function App() {
                     <div className="mt-5" style={{ maxWidth: "500px" }}>
                         <AthletesSettings athletes={athletes} onChange={setAthletes} state={state} />
                     </div>
-                </Jumbotron>
+                </div>
 
                 <Card className="mb-2">
                     <Card.Body>

@@ -1,7 +1,7 @@
 import "./polyfills";
+import "./index.css";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./components/App";

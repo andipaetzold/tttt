@@ -1,0 +1,17 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+.jumbotron {
+    padding: 2rem 1rem;
+
+    margin-bottom: 2rem;
+    background-color: #e9ecef;
+    border-radius: 0.3rem;
+}
+
+.link-decoration {
+    text-decoration: none;
+}
+
+.link-decoration:hover {
+    text-decoration: underline;
+}

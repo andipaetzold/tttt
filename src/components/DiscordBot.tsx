@@ -29,7 +29,7 @@ export function DiscordBot() {
                         </a>
 
                         <a
-                            className="btn btn-primary ml-2"
+                            className="btn btn-primary ms-2"
                             target="_blank"
                             rel="noopener noreferrer"
                             href="https://discord.com/api/oauth2/authorize?client_id=806979974594560060&amp;permissions=3155968&amp;scope=bot+applications.commands"
