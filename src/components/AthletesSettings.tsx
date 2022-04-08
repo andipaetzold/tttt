@@ -1,6 +1,6 @@
 import { faPlus, faSkullCrossbones, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Col, Form, InputGroup, Row, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
+import { Button, Col, Form, InputGroup, Row, ToggleButton } from "react-bootstrap";
 import { DEFAULT_ATHLETE_NAMES, DEFAULT_TIME_PER_ATHLETE } from "../common/constants";
 import { Athlete, State } from "../types";
 import { CopyButton } from "./CopyButton";
