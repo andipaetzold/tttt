@@ -1,6 +1,5 @@
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
 import { ProgressBar } from "react-bootstrap";
 import { secondsToString } from "../common/util";
 

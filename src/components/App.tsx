@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useInterval from "@use-it/interval";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button, Card, Container, Form, Jumbotron } from "react-bootstrap";
 import { useFullScreenHandle } from "react-full-screen";
 import { loadConfig, saveConfig } from "../common/config";
