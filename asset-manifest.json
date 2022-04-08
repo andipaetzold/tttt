@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "./static/css/main.c55b5eb3.css",
-    "main.js": "./static/js/main.347a2e33.js",
+    "main.js": "./static/js/main.3e5f85b2.js",
     "static/media/discord.svg": "./static/media/discord.3372aeeb4f733add4388961f04cff308.svg",
     "static/media/discordMark.svg": "./static/media/discordMark.d2c3bfa75ff259af5d7fc2e4fa123569.svg",
     "index.html": "./index.html",
     "main.c55b5eb3.css.map": "./static/css/main.c55b5eb3.css.map",
-    "main.347a2e33.js.map": "./static/js/main.347a2e33.js.map"
+    "main.3e5f85b2.js.map": "./static/js/main.3e5f85b2.js.map"
   },
   "entrypoints": [
     "static/css/main.c55b5eb3.css",
-    "static/js/main.347a2e33.js"
+    "static/js/main.3e5f85b2.js"
   ]
 }
