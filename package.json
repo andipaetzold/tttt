@@ -26,7 +26,7 @@
         "@sentry/react": "7.14.0",
         "@sentry/tracing": "7.14.0",
         "@use-it/interval": "1.0.0",
-        "bootstrap": "5.2.1",
+        "bootstrap": "5.2.2",
         "react": "18.2.0",
         "react-bootstrap": "2.5.0",
         "react-dom": "18.2.0",
