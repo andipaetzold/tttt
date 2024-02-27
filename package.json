@@ -57,7 +57,7 @@
         ]
     },
     "devDependencies": {
-        "@types/react": "18.2.58",
+        "@types/react": "18.2.59",
         "@types/react-dom": "18.2.19"
     }
 }
