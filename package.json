@@ -23,7 +23,7 @@
         "@fortawesome/free-regular-svg-icons": "6.5.2",
         "@fortawesome/free-solid-svg-icons": "6.5.2",
         "@fortawesome/react-fontawesome": "0.2.2",
-        "@sentry/react": "7.116.0",
+        "@sentry/react": "7.117.0",
         "@sentry/tracing": "7.114.0",
         "@use-it/interval": "1.0.0",
         "bootstrap": "5.3.3",
