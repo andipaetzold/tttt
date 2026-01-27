@@ -27,9 +27,9 @@
         "@sentry/tracing": "7.120.4",
         "@use-it/interval": "1.0.0",
         "bootstrap": "5.3.8",
-        "react": "18.3.1",
+        "react": "19.2.4",
         "react-bootstrap": "2.10.10",
-        "react-dom": "18.3.1",
+        "react-dom": "19.2.4",
         "react-full-screen": "1.1.1",
         "react-scripts": "5.0.1",
         "string.prototype.replaceall": "1.0.11",
@@ -57,7 +57,7 @@
         ]
     },
     "devDependencies": {
-        "@types/react": "18.3.27",
-        "@types/react-dom": "18.3.7"
+        "@types/react": "19.2.10",
+        "@types/react-dom": "19.2.3"
     }
 }
