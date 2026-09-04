@@ -1,63 +1,54 @@
 {
-    "name": "tttt",
-    "version": "0.0.0",
-    "private": true,
-    "license": "MIT",
-    "author": {
-        "name": "Andi Pätzold",
-        "email": "github@andipaetzold.com",
-        "url": "https://github.com/andipaetzold"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/andipaetzold/race-evaluator.git"
-    },
-    "bugs": {
-        "url": "https://github.com/andipaetzold/tttt/issues",
-        "email": "github@andipaetzold.com"
-    },
-    "homepage": ".",
-    "dependencies": {
-        "@fortawesome/fontawesome-svg-core": "6.7.2",
-        "@fortawesome/free-brands-svg-icons": "6.7.2",
-        "@fortawesome/free-regular-svg-icons": "6.7.2",
-        "@fortawesome/free-solid-svg-icons": "6.7.2",
-        "@fortawesome/react-fontawesome": "0.2.6",
-        "@sentry/react": "7.120.4",
-        "@sentry/tracing": "7.120.4",
-        "@use-it/interval": "1.0.0",
-        "bootstrap": "5.3.8",
-        "react": "18.3.1",
-        "react-bootstrap": "2.10.10",
-        "react-dom": "18.3.1",
-        "react-full-screen": "1.1.1",
-        "react-scripts": "5.0.1",
-        "string.prototype.replaceall": "1.0.11",
-        "typescript": "4.9.5"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build"
-    },
-    "eslintConfig": {
-        "extends": [
-            "react-app"
-        ]
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    },
-    "devDependencies": {
-        "@types/react": "18.3.31",
-        "@types/react-dom": "18.3.7"
-    }
+  "name": "tttt",
+  "version": "0.0.0",
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/andipaetzold/tttt/issues",
+    "email": "github@andipaetzold.com"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Andi Pätzold",
+    "email": "github@andipaetzold.com",
+    "url": "https://github.com/andipaetzold"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andipaetzold/race-evaluator.git"
+  },
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "build": "npm run typecheck && vite build",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
+    "lint": "oxlint --deny-warnings"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "6.7.2",
+    "@fortawesome/free-brands-svg-icons": "6.7.2",
+    "@fortawesome/free-regular-svg-icons": "6.7.2",
+    "@fortawesome/free-solid-svg-icons": "6.7.2",
+    "@fortawesome/react-fontawesome": "0.2.6",
+    "@sentry/react": "7.120.4",
+    "@sentry/tracing": "7.120.4",
+    "@use-it/interval": "1.0.0",
+    "bootstrap": "5.3.8",
+    "react": "18.3.1",
+    "react-bootstrap": "2.10.10",
+    "react-dom": "18.3.1",
+    "react-full-screen": "1.1.1",
+    "string.prototype.replaceall": "1.0.11"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "@vitejs/plugin-react": "6.1.1",
+    "oxfmt": "0.66.0",
+    "oxlint": "1.81.0",
+    "typescript": "4.9.5",
+    "vite": "8.2.2"
+  }
 }

@@ -14,12 +14,16 @@ jobs:
         run: nvm install
       - name: Install
         run: npm ci
+      - name: Check formatting
+        run: npm run format:check
+      - name: Lint
+        run: npm run lint
       - name: Build
         run: npm run build
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.9.0
         with:
           branch: gh-pages
-          folder: build
+          folder: dist
           clean: true
           dry-run: ${{ github.ref != 'refs/heads/main' }}
