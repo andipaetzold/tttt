@@ -12,10 +12,10 @@ interface Props {
 }
 
 export function AthletesSettings({ athletes, onChange, state }: Props) {
-  const discordCommand = `!t config athletes ${athletes
+  const discordCommand = `/timer athletes ${athletes
     .map(
-      (athlete) =>
-        `${athlete.text.trim().replaceAll(" ", "_").replaceAll(" ", "_")}:${athlete.time}`,
+      (athlete, index) =>
+        `athlete${index + 1}:${athlete.text.trim()} time${index + 1}:${athlete.time}`,
     )
     .join(" ")}`;
 
