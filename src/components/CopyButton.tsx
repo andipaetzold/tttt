@@ -16,8 +16,8 @@ export function CopyButton({ command }: Props) {
 
   const copyCommand = async () => {
     try {
-      if (await isSupported()) {
-        navigator.clipboard.writeText(command);
+      if (typeof navigator.clipboard?.writeText === "function") {
+        await navigator.clipboard.writeText(command);
 
         if (copiedTimeout.current) {
           clearTimeout(copiedTimeout.current);
@@ -57,18 +57,9 @@ function getTooltipText(state: State) {
     case "ERROR":
       return "Could not copy command.";
     case "NOT_SUPPORTED":
-      return "Your browser doesn't allow copying the Dsiscord command.";
+      return "Your browser doesn't allow copying the Discord command.";
     default:
     case "DEFAULT":
       return "Copy Discord Bot command";
   }
-}
-
-async function isSupported(): Promise<boolean> {
-  if (!("permissions" in navigator)) {
-    return false;
-  }
-
-  const result = await navigator.permissions.query({ name: "clipboard-write" as PermissionName });
-  return result.state === "granted";
 }
