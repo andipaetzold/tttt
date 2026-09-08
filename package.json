@@ -47,7 +47,7 @@
     "@types/react-dom": "18.3.7",
     "@vitejs/plugin-react": "6.1.1",
     "oxfmt": "0.67.0",
-    "oxlint": "1.81.0",
+    "oxlint": "1.82.0",
     "typescript": "4.9.5",
     "vite": "8.2.2"
   }
